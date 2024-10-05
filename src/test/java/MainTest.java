@@ -161,12 +161,14 @@ class MainTest {
         Game game = new Game();
         game.initializeDecks();
 
-        Deck<AdventureCard> original = game.getAdventureDeck();
+        Deck<AdventureCard> original = new Deck<>();
+        original.setDeck(game.getAdventureDeck().getCards());
         game.shuffleAdventureDeck();
         Deck<AdventureCard> shuffled = game.getAdventureDeck();
 
         assertNotEquals(original, shuffled);
         assertTrue(shuffled.getCards().containsAll(original.getCards()));
+        assertEquals(original.getSize(), shuffled.getSize());
     }
 
     @Test
@@ -175,12 +177,14 @@ class MainTest {
         Game game = new Game();
         game.initializeDecks();
 
-        Deck<EventCard> originalOrder = game.getEventDeck();
+        Deck<EventCard> original = new Deck<>();
+        original.setDeck(game.getEventDeck().getCards());
         game.shuffleEventDeck();
-        Deck<EventCard> shuffledOrder = game.getEventDeck();
+        Deck<EventCard> shuffled = game.getEventDeck();
 
-        assertNotEquals(originalOrder, shuffledOrder);
-        assertTrue(shuffledOrder.getCards().containsAll(originalOrder.getCards()));
+        assertNotEquals(original, shuffled);
+        assertTrue(shuffled.getCards().containsAll(original.getCards()));
+        assertEquals(original.getSize(), shuffled.getSize());
     }
 
 }
