@@ -3,6 +3,14 @@ import Enums.CardType;
 
 public class AdventureCard {
 
-    public CardType getType() { return null; }
+    private final CardType cardType;
+    private final int cardValue;
+
+    public AdventureCard(CardType cardType) {
+        this.cardType = cardType;
+        this.cardValue = cardType.getValue();
+    }
+
+    public CardType getType() { return cardType; }
 
 }

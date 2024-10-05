@@ -49,6 +49,10 @@ public enum CardType {
         this.value = 0; // Default value for cards without specific numeric values
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public boolean isWeapon() {
         return type.equals("Weapon");
     }
