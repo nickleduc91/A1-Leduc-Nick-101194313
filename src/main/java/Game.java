@@ -2,6 +2,8 @@ import Cards.AdventureCard;
 import Cards.EventCard;
 import Enums.CardType;
 
+import java.util.List;
+
 public class Game {
 
     private Deck<EventCard> eventDeck;
@@ -53,6 +55,12 @@ public class Game {
         shuffleAdventureDeck();
         shuffleEventDeck();
     }
+
+    public void initializePlayers() {
+
+    }
+
+    public Player getPlayer(int id) { return new Player(); }
 
     public AdventureCard drawAdventureCard() {
         return adventureDeck.drawCard();

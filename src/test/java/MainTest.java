@@ -155,6 +155,7 @@ class MainTest {
 
     }
 
+    // RESP-02 Tests
     @Test
     @DisplayName("Ensure the Adventure Deck is shuffled properly")
     void RESP_02_Test_01() {
@@ -185,6 +186,23 @@ class MainTest {
         assertNotEquals(original, shuffled);
         assertTrue(shuffled.getCards().containsAll(original.getCards()));
         assertEquals(original.getSize(), shuffled.getSize());
+    }
+
+    // RESP-03 TESTS
+    @Test
+    @DisplayName("Ensure each player gets 12 adventure cards and the Adventure Deck size is now equal to 52 ( 100 - (12*4) )")
+    void RESP_03_TEST_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        for (int i = 0;  i < 4; i++) {
+            Player player = game.getPlayer(i);
+            int handSize = player.getHandSize();
+            assertEquals(12, handSize);
+        }
+
+        assertEquals(52, game.getAdventureDeckSize());
     }
 
 }
