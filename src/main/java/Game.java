@@ -10,7 +10,9 @@ public class Game {
     public Game() {
         eventDeck = new Deck<>();
         adventureDeck = new Deck<>();
+    }
 
+    public void initializeDecks() {
         int[] expectedFoeCounts = {8, 7, 8, 7, 7, 4, 4, 2, 2, 1};
         CardType[] foeCards = {CardType.F5, CardType.F10, CardType.F15, CardType.F20, CardType.F25, CardType.F30, CardType.F35, CardType.F40, CardType.F50, CardType.F70};
 
@@ -48,11 +50,6 @@ public class Game {
                 eventDeck.addCard(card);
             }
         }
-    }
-
-
-    public void initializeDecks() {
-
     }
 
     public AdventureCard drawAdventureCard() {
