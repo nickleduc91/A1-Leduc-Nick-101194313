@@ -22,4 +22,5 @@ public class Deck <T> {
 
     public int getSize() { return cards.size(); }
 
+    public List<T> getCards() { return null; }
 }

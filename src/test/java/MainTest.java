@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 
 class MainTest {
 
@@ -152,6 +153,34 @@ class MainTest {
             assertEquals(expectedCount, eventValues.get(type));
         }
 
+    }
+
+    @Test
+    @DisplayName("Ensure the Adventure Deck is shuffled properly")
+    void RESP_02_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+
+        Deck<AdventureCard> original = game.getAdventureDeck();
+        game.shuffleAdventureDeck();
+        Deck<AdventureCard> shuffled = game.getAdventureDeck();
+
+        assertNotEquals(original, shuffled);
+        assertTrue(shuffled.getCards().containsAll(original.getCards()));
+    }
+
+    @Test
+    @DisplayName("Ensure the Event Deck is shuffled properly")
+    void RESP_02_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+
+        Deck<EventCard> originalOrder = game.getEventDeck();
+        game.shuffleEventDeck();
+        Deck<EventCard> shuffledOrder = game.getEventDeck();
+
+        assertNotEquals(originalOrder, shuffledOrder);
+        assertTrue(shuffledOrder.getCards().containsAll(originalOrder.getCards()));
     }
 
 }
