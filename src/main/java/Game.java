@@ -2,16 +2,19 @@ import Cards.AdventureCard;
 import Cards.EventCard;
 import Enums.CardType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
 
     private Deck<EventCard> eventDeck;
     private Deck<AdventureCard> adventureDeck;
+    private List<Player> players;
 
     public Game() {
         eventDeck = new Deck<>();
         adventureDeck = new Deck<>();
+        this.players = new ArrayList<>();
     }
 
     public void initializeDecks() {
@@ -57,10 +60,18 @@ public class Game {
     }
 
     public void initializePlayers() {
+        for(int i = 0; i < 4; i++) {
+            Player player = new Player(i);
+            players.add(player);
 
+            // Deal 12 adventure cards to the player
+            for (int j = 0; j < 12; j++) {
+                player.addCardToHand(drawAdventureCard());
+            }
+        }
     }
 
-    public Player getPlayer(int id) { return new Player(); }
+    public Player getPlayer(int id) { return players.get(id); }
 
     public AdventureCard drawAdventureCard() {
         return adventureDeck.drawCard();

@@ -1,5 +1,22 @@
+import Cards.AdventureCard;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
-    public int getHandSize() { return 0; }
+    private final int id;
+    private List<AdventureCard> hand;
+
+    public Player(int id) {
+        this.id = id;
+        this.hand = new ArrayList<>();
+    }
+
+    public void addCardToHand(AdventureCard card) {
+        hand.add(card);
+    }
+
+    public int getHandSize() { return hand.size(); }
 
 }
