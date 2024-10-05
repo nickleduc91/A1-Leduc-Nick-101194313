@@ -50,6 +50,8 @@ public class Game {
                 eventDeck.addCard(card);
             }
         }
+        shuffleAdventureDeck();
+        shuffleEventDeck();
     }
 
     public AdventureCard drawAdventureCard() {
@@ -59,16 +61,11 @@ public class Game {
         return eventDeck.drawCard();
     }
 
-    public Deck<EventCard> getEventDeck() {
-        return null;
-    }
+    public Deck<EventCard> getEventDeck() { return eventDeck; }
+    public Deck<AdventureCard> getAdventureDeck() { return adventureDeck; }
 
-    public Deck<AdventureCard> getAdventureDeck() {
-        return null;
-    }
-
-    public void shuffleAdventureDeck() { }
-    public void shuffleEventDeck() { }
+    public void shuffleAdventureDeck() { adventureDeck.shuffleCards(); }
+    public void shuffleEventDeck() { eventDeck.shuffleCards(); }
 
     public int getEventDeckSize() { return eventDeck.getSize(); }
     public int getAdventureDeckSize() { return adventureDeck.getSize(); }
