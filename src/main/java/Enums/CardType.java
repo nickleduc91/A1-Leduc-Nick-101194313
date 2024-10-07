@@ -2,52 +2,49 @@ package Enums;
 
 public enum CardType {
 
-    // Weapon Cards
-    DAGGER("Weapon", 5),
-    HORSE("Weapon", 10),
-    SWORD("Weapon", 10),
-    BATTLE_AXE("Weapon", 15),
-    LANCE("Weapon", 20),
-    EXCALIBUR("Weapon", 30),
+    DAGGER("Weapon", 5, "D5"),
+    HORSE("Weapon", 10, "H10"),
+    SWORD("Weapon", 10, "S10"),
+    BATTLE_AXE("Weapon", 15, "B15"),
+    LANCE("Weapon", 20, "L20"),
+    EXCALIBUR("Weapon", 30, "E30"),
 
-    // Foe Cards
-    F5("Foe", 5),
-    F10("Foe", 10),
-    F15("Foe", 15),
-    F20("Foe", 20),
-    F25("Foe", 25),
-    F30("Foe", 30),
-    F35("Foe", 35),
-    F40("Foe", 40),
-    F50("Foe", 50),
-    F70("Foe", 70),
+    F5("Foe", 5, "F5"),
+    F10("Foe", 10, "F10"),
+    F15("Foe", 15, "F15"),
+    F20("Foe", 20, "F20"),
+    F25("Foe", 25, "F25"),
+    F30("Foe", 30, "F30"),
+    F35("Foe", 35, "F35"),
+    F40("Foe", 40, "F40"),
+    F50("Foe", 50, "F50"),
+    F70("Foe", 70, "F70"),
 
-    // Quest Cards
-    Q2("Quest", 2),
-    Q3("Quest", 3),
-    Q4("Quest", 4),
-    Q5("Quest", 5),
+    Q2("Quest", 2, "Q2"),
+    Q3("Quest", 3, "Q3"),
+    Q4("Quest", 4, "Q4"),
+    Q5("Quest", 5, "Q5"),
 
-    // Event Cards
     PLAGUE("Event"),
     QUEENS_FAVOR("Event"),
     PROSPERITY("Event");
 
-    // Fields for common attributes
     private final String type;
     private final int value;
+    private String name;
 
-    // Constructor for cards with value or stages
-    CardType(String type, int value) {
+    CardType(String type, int value, String name) {
         this.type = type;
         this.value = value;
+        this.name = name;
     }
 
-    // Constructor for event cards without a value
     CardType(String category) {
         this.type = category;
-        this.value = 0; // Default value for cards without specific numeric values
+        this.value = 0;
     }
+
+    public String getName() { return name; }
 
     public int getValue() {
         return value;

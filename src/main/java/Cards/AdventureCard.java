@@ -11,6 +11,8 @@ public class AdventureCard {
         this.cardValue = cardType.getValue();
     }
 
+    public int getValue() { return cardValue; }
     public CardType getType() { return cardType; }
+    public String toString() { return cardType.getName(); }
 
 }
