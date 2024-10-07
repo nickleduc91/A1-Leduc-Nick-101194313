@@ -9,7 +9,7 @@ public class Game {
 
     private Deck<EventCard> eventDeck;
     private Deck<AdventureCard> adventureDeck;
-    private List<Player> players;
+    private final List<Player> players;
 
     public Game() {
         eventDeck = new Deck<>();
@@ -72,11 +72,26 @@ public class Game {
     }
 
     public boolean playTurn() {
-        return true;
+        return hasWinner();
+    }
+
+    public boolean hasWinner() {
+        for (Player player : players) {
+            if (player.getShields() >= 7) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Player> getWinners() {
-        return new ArrayList<>();
+        List<Player> winners = new ArrayList<>();
+        for (Player player : players) {
+            if (player.getShields() >= 7) {
+                winners.add(player);
+            }
+        }
+        return winners;
     }
 
     public Player getPlayer(int id) { return players.get(id); }
