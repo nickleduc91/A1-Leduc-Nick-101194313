@@ -408,4 +408,102 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("There are no winners and the game displays the hand of the current player")
+    void RESP_08_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p2 = game.getPlayer(1);
+        boolean hasWinner = game.playTurn();
+        assertFalse(hasWinner);
+
+        StringWriter output = new StringWriter();
+        game.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("HAND:"));
+
+        for (AdventureCard card : p2.getHand()) {
+            String expectedOutput = card.toString();
+            assertTrue(result.contains(expectedOutput));
+        }
+    }
+
+    @Test
+    @DisplayName("The Game displays the current player's hand with only foe cards in increasing order")
+    void RESP_08_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+
+        p1.getHand().clear();
+        p1.addCardToHand(new AdventureCard(CardType.F25));
+        p1.addCardToHand(new AdventureCard(CardType.F30));
+        p1.addCardToHand(new AdventureCard(CardType.F35));
+
+        StringWriter output = new StringWriter();
+        game.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getCurrentPlayer());
+        String result = output.toString();
+
+
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.indexOf("F25") < result.indexOf("F30"));
+        assertTrue(result.indexOf("F30") < result.indexOf("F35"));
+    }
+
+    @Test
+    @DisplayName("The Game displays the current player's hand with only weapon cards sorted correctly, where Sword appears before Horse")
+    void RESP_08_Test_03() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+
+        p1.getHand().clear();
+        p1.addCardToHand(new AdventureCard(CardType.EXCALIBUR));
+        p1.addCardToHand(new AdventureCard(CardType.HORSE));
+        p1.addCardToHand(new AdventureCard(CardType.SWORD));
+        p1.addCardToHand(new AdventureCard(CardType.LANCE));
+
+        StringWriter output = new StringWriter();
+        game.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.indexOf("S10") < result.indexOf("H10"));
+        assertTrue(result.indexOf("L20") > result.indexOf("H10"));
+        assertTrue(result.indexOf("L20") < result.indexOf("E30"));
+    }
+    @Test
+    @DisplayName("The Game displays the current player's hand with a mix of foe and weapon cards")
+    void RESP_08_Test_04() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+
+        p1.getHand().clear();
+        p1.addCardToHand(new AdventureCard(CardType.F5));
+        p1.addCardToHand(new AdventureCard(CardType.F70));
+        p1.addCardToHand(new AdventureCard(CardType.SWORD));
+        p1.addCardToHand(new AdventureCard(CardType.HORSE));
+
+        StringWriter output = new StringWriter();
+        game.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.indexOf("F5") < result.indexOf("F70"));
+        // Sword should be before the horse
+        assertTrue(result.indexOf("S10") < result.indexOf("H10"));
+        assertTrue(result.indexOf("F70") < result.indexOf("S10"));
+    }
+
+
 }

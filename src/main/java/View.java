@@ -16,4 +16,8 @@ public class View {
         output.println("Current Turn - " + player);
         output.flush();
     }
+
+    public void displayCurrentPlayerHand(PrintWriter output, Player player) {
+
+    }
 }

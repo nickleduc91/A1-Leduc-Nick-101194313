@@ -26,5 +26,6 @@ public class Player {
     public void addShields(int shields) { this.shields += shields; }
     public int getShields() { return shields; }
     public int getHandSize() { return hand.size(); }
+    public List<AdventureCard> getHand() { return new ArrayList<>(); }
 
 }
