@@ -205,4 +205,77 @@ class MainTest {
         assertEquals(52, game.getAdventureDeckSize());
     }
 
+    // RESP-04 Tests
+    @Test
+    @DisplayName("Ensure the game identifies a winner when a player has exactly 7 shields")
+    void RESP_04_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.addShields(7);
+        p2.addShields(0);
+        p3.addShields(6);
+        p4.addShields(5);
+        boolean hasWinner = game.playTurn();
+
+        assertTrue(hasWinner);
+        List<Player> winners = game.getWinners();
+        assertEquals(1, winners.size());
+        assertTrue(winners.contains(p1));
+    }
+
+    @Test
+    @DisplayName("Ensure the game identifies multiple winners when more than one player has 7 shields")
+    void RESP_04_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.addShields(4);
+        p2.addShields(8);
+        p3.addShields(7);
+        p4.addShields(0);
+        boolean hasWinner = game.playTurn();
+
+        assertTrue(hasWinner);
+        List<Player> winners = game.getWinners();
+        assertEquals(2, winners.size());
+        assertTrue(winners.contains(p2));
+        assertTrue(winners.contains(p3));
+    }
+
+    @Test
+    @DisplayName("Ensure the game identifies no winners after a turn if all players have <= 7 shields")
+    void RESP_04_Test_03() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.addShields(2);
+        p2.addShields(0);
+        p3.addShields(6);
+        p4.addShields(5);
+        boolean hasWinner = game.playTurn();
+
+        assertFalse(hasWinner);
+        List<Player> winners = game.getWinners();
+        assertEquals(0, winners.size());
+    }
+
 }

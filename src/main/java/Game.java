@@ -64,11 +64,19 @@ public class Game {
             Player player = new Player(i);
             players.add(player);
 
-            // Deal 12 adventure cards to the player
+            // Deal 12 adventure cards
             for (int j = 0; j < 12; j++) {
                 player.addCardToHand(drawAdventureCard());
             }
         }
+    }
+
+    public boolean playTurn() {
+        return true;
+    }
+
+    public List<Player> getWinners() {
+        return new ArrayList<>();
     }
 
     public Player getPlayer(int id) { return players.get(id); }

@@ -17,6 +17,10 @@ public class Player {
         hand.add(card);
     }
 
+    public void addShields(int shields) {
+
+    }
+
     public int getHandSize() { return hand.size(); }
 
 }
