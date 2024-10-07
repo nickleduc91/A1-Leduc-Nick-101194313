@@ -380,4 +380,32 @@ class MainTest {
         assertTrue(result.contains(p3.toString()));
     }
 
+    //RESP-07 Tests
+    @Test
+    @DisplayName("There are no winners and the game indicates it is the turn of the next player")
+    void RESP_07_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.addShields(4);
+        p2.addShields(1);
+        p3.addShields(2);
+        p4.addShields(0);
+        boolean hasWinner = game.playTurn();
+        assertFalse(hasWinner);
+
+        StringWriter output = new StringWriter();
+        game.getView().displayCurrentPlayer(new PrintWriter(output), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("Current Turn - " + p2.toString()));
+
+    }
+
 }

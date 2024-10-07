@@ -11,4 +11,8 @@ public class View {
 
         output.flush();
     }
+
+    public void displayCurrentPlayer(PrintWriter output, Player player) {
+
+    }
 }
