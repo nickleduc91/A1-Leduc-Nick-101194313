@@ -13,6 +13,7 @@ public class View {
     }
 
     public void displayCurrentPlayer(PrintWriter output, Player player) {
-
+        output.println("Current Turn - " + player);
+        output.flush();
     }
 }
