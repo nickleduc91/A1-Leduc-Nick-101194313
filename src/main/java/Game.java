@@ -127,4 +127,6 @@ public class Game {
 
     public int getEventDeckSize() { return eventDeck.getSize(); }
     public int getAdventureDeckSize() { return adventureDeck.getSize(); }
+
+    public View getView() { return new View(); }
 }

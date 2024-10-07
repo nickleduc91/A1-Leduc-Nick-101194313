@@ -6,6 +6,8 @@ import Enums.CardType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -347,6 +349,35 @@ class MainTest {
         game.playTurn();
         assertEquals(p1, game.getCurrentPlayer());
 
+    }
+
+    //RESP-06 Tests
+    @Test
+    @DisplayName("Ensure the game displays the id of the winning player when there are real winners")
+    void RESP_06_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.addShields(4);
+        p2.addShields(8);
+        p3.addShields(7);
+        p4.addShields(0);
+        boolean hasWinner = game.playTurn();
+        assertTrue(hasWinner);
+
+        StringWriter output = new StringWriter();
+        game.getView().displayWinners(new PrintWriter(output), game.getWinners());
+        String result = output.toString();
+
+        assertTrue(result.contains("Winning Players:"));
+        assertTrue(result.contains(p2.toString()));
+        assertTrue(result.contains(p3.toString()));
     }
 
 }
