@@ -19,6 +19,10 @@ public class Player {
         hand.add(card);
     }
 
+    public String toString() {
+        return "Player ID: P" + (id + 1);
+    }
+
     public void addShields(int shields) { this.shields += shields; }
     public int getShields() { return shields; }
     public int getHandSize() { return hand.size(); }

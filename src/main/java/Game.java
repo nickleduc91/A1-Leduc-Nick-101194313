@@ -11,12 +11,14 @@ public class Game {
     private Deck<AdventureCard> adventureDeck;
     private final List<Player> players;
     private int currentPlayerIndex;
+    private final View view;
 
     public Game() {
         eventDeck = new Deck<>();
         adventureDeck = new Deck<>();
         this.players = new ArrayList<>();
         this.currentPlayerIndex = 0;
+        this.view = new View();
     }
 
     public void initializeDecks() {
@@ -128,5 +130,5 @@ public class Game {
     public int getEventDeckSize() { return eventDeck.getSize(); }
     public int getAdventureDeckSize() { return adventureDeck.getSize(); }
 
-    public View getView() { return new View(); }
+    public View getView() { return view; }
 }
