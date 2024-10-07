@@ -10,11 +10,13 @@ public class Game {
     private Deck<EventCard> eventDeck;
     private Deck<AdventureCard> adventureDeck;
     private final List<Player> players;
+    private int currentPlayerIndex;
 
     public Game() {
         eventDeck = new Deck<>();
         adventureDeck = new Deck<>();
         this.players = new ArrayList<>();
+        this.currentPlayerIndex = 0;
     }
 
     public void initializeDecks() {
@@ -72,7 +74,20 @@ public class Game {
     }
 
     public boolean playTurn() {
-        return hasWinner();
+        if (hasWinner()) {
+            return true;
+        }
+
+        updateNextPlayer();
+        return false;
+    }
+
+    public void updateNextPlayer() {
+        if(currentPlayerIndex == 3) {
+            currentPlayerIndex = 0;
+        } else {
+            currentPlayerIndex += 1;
+        }
     }
 
     public boolean hasWinner() {
@@ -94,7 +109,7 @@ public class Game {
         return winners;
     }
 
-    public Player getCurrentPlayer() { return new Player(100); }
+    public Player getCurrentPlayer() { return players.get(currentPlayerIndex); }
     public Player getPlayer(int id) { return players.get(id); }
 
     public AdventureCard drawAdventureCard() {
