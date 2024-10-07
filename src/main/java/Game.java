@@ -94,6 +94,7 @@ public class Game {
         return winners;
     }
 
+    public Player getCurrentPlayer() { return new Player(100); }
     public Player getPlayer(int id) { return players.get(id); }
 
     public AdventureCard drawAdventureCard() {

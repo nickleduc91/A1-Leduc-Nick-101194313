@@ -278,4 +278,75 @@ class MainTest {
         assertEquals(0, winners.size());
     }
 
+    // RESP-05 Tests
+    @Test
+    @DisplayName("Ensure P1 starts the game and is followed up by P2")
+    void RESP_05_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+
+        assertEquals(p1, game.getCurrentPlayer());
+        game.playTurn();
+        assertEquals(p2, game.getCurrentPlayer());
+
+    }
+
+    @Test
+    @DisplayName("Ensure P2 starts the game and is followed up by P3")
+    void RESP_05_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+
+        game.playTurn();
+        assertEquals(p2, game.getCurrentPlayer());
+        game.playTurn();
+        assertEquals(p3, game.getCurrentPlayer());
+
+    }
+
+    @Test
+    @DisplayName("Ensure P3 starts the game and is followed up by P4")
+    void RESP_05_Test_03() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        game.playTurn();
+        game.playTurn();
+        assertEquals(p3, game.getCurrentPlayer());
+        game.playTurn();
+        assertEquals(p4, game.getCurrentPlayer());
+
+    }
+
+    @Test
+    @DisplayName("Ensure P4 starts the game and is followed up by P1")
+    void RESP_05_Test_04() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+        Player p4 = game.getPlayer(3);
+
+        game.playTurn();
+        game.playTurn();
+        game.playTurn();
+        assertEquals(p4, game.getCurrentPlayer());
+        game.playTurn();
+        assertEquals(p1, game.getCurrentPlayer());
+
+    }
+
 }
