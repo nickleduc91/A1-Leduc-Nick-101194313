@@ -604,17 +604,17 @@ class MainTest {
         // Remove all cards from the Event Deck and place them in the discard deck
         for (int i = 0; i < initialDeckSize; i++) {
             EventCard drawnCard = game.drawEventCard();
-            game.getEventDiscardDeck().addCard(drawnCard);
+            game.getEventDeck().addToDiscardPile(drawnCard);
         }
 
         assertEquals(0, game.getEventDeckSize());
-        assertEquals(initialDeckSize, game.getEventDiscardDeckSize());
+        assertEquals(initialDeckSize, game.getEventDeck().getDiscardPileSize());
 
         // Trigger the re-shuffle of the discard pile
         game.drawEventCard();
 
         assertEquals(initialDeckSize - 1, game.getEventDeckSize());
-        assertTrue(game.getEventDiscardDeck().getCards().isEmpty());
+        assertTrue(game.getEventDeck().getDiscardPile().isEmpty());
     }
 
     @Test
@@ -629,20 +629,20 @@ class MainTest {
         // Remove all cards from the Event Deck and place them in the discard deck
         for (int i = 0; i < initialDeckSize; i++) {
             EventCard drawnCard = game.drawEventCard();
-            game.getEventDiscardDeck().addCard(drawnCard);
+            game.getEventDeck().addToDiscardPile(drawnCard);
         }
 
         assertEquals(0, game.getEventDeckSize());
-        assertEquals(initialDeckSize, game.getEventDiscardDeckSize());
+        assertEquals(initialDeckSize, game.getEventDeck().getDiscardPileSize());
 
         // Check that the first card of the discard pile is not the first card that appears in the Event deck after drawing from empty deck
-        EventCard originalDiscardCard = new EventCard(game.getEventDiscardDeck().getCards().getFirst().getType());
+        EventCard originalDiscardCard = new EventCard(game.getEventDeck().getDiscardPile().getFirst().getType());
         // Trigger the re-shuffle of the discard pile
         game.drawEventCard();
         assertNotEquals(originalDiscardCard, game.getEventDeck().getCards().getFirst());
 
         assertEquals(initialDeckSize - 1, game.getEventDeckSize());
-        assertTrue(game.getEventDiscardDeck().getCards().isEmpty());
+        assertTrue(game.getEventDeck().getDiscardPile().isEmpty());
     }
 
 

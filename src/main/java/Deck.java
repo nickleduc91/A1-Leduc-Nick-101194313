@@ -26,6 +26,12 @@ public class Deck <T> {
         return cards.removeFirst();
     }
 
+    public List<T> getDiscardPile() { return discardPile; }
+
+    public int getDiscardPileSize() { return discardPile.size(); }
+
+    public void addToDiscardPile(T card) { discardPile.add(card); }
+
     public void setDeck(List<T> newCards) { cards = newCards; }
 
     public int getSize() { return cards.size(); }
