@@ -2,12 +2,13 @@ import Cards.AdventureCard;
 import Enums.CardType;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class View {
+
+    public void endTurn(PrintWriter output, Scanner input, Player player) {
+
+    }
 
     public void displayWinners(PrintWriter output, List<Player> players) {
         output.println("Winning Players:");

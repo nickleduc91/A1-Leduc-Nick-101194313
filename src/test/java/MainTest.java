@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Scanner;
 
 class MainTest {
 
@@ -408,6 +409,7 @@ class MainTest {
 
     }
 
+    //RESP-08 Tests
     @Test
     @DisplayName("There are no winners and the game displays the hand of the current player")
     void RESP_08_Test_01() {
@@ -479,6 +481,7 @@ class MainTest {
         assertTrue(result.indexOf("L20") > result.indexOf("H10"));
         assertTrue(result.indexOf("L20") < result.indexOf("E30"));
     }
+
     @Test
     @DisplayName("The Game displays the current player's hand with a mix of foe and weapon cards")
     void RESP_08_Test_04() {
@@ -503,6 +506,89 @@ class MainTest {
         // Sword should be before the horse
         assertTrue(result.indexOf("S10") < result.indexOf("H10"));
         assertTrue(result.indexOf("F70") < result.indexOf("S10"));
+    }
+
+    //RESP-09 Tests
+    @Test
+    @DisplayName("The game properly indicates that the turn of the current player (p1) has ended and clears the hotseat")
+    void RESP_09_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getPlayer(0);
+
+        StringWriter output = new StringWriter();
+        String input = "\n";
+        game.getView().endTurn(new PrintWriter(output), new Scanner(input), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("The turn of " + p1 + " has ended"));
+        assertTrue(result.contains("Press 'ENTER' to confirm the end of your turn"));
+        assertTrue(result.contains("\n"));
+    }
+
+    @Test
+    @DisplayName("The game properly indicates that the turn of the current player (p2) has ended and clears the display")
+    void RESP_09_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p2 = game.getPlayer(1);
+        game.playTurn();
+
+        StringWriter output = new StringWriter();
+        String input = "\n";
+        game.getView().endTurn(new PrintWriter(output), new Scanner(input), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("The turn of " + p2 + " has ended"));
+        assertTrue(result.contains("Press 'ENTER' to confirm the end of your turn"));
+        assertTrue(result.contains("\n"));
+    }
+
+    @Test
+    @DisplayName("The game properly indicates that the turn of the current player (p3) has ended and clears the display")
+    void RESP_09_Test_03() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p3 = game.getPlayer(2);
+        game.playTurn();
+        game.playTurn();
+
+        StringWriter output = new StringWriter();
+        String input = "\n";
+        game.getView().endTurn(new PrintWriter(output), new Scanner(input), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("The turn of " + p3 + " has ended"));
+        assertTrue(result.contains("Press 'ENTER' to confirm the end of your turn"));
+        assertTrue(result.contains("\n"));
+    }
+
+    @Test
+    @DisplayName("The game properly indicates that the turn of the current player (p4) has ended and clears the display")
+    void RESP_09_Test_04() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p4 = game.getPlayer(3);
+        game.playTurn();
+        game.playTurn();
+        game.playTurn();
+
+        StringWriter output = new StringWriter();
+        String input = "\n";
+        game.getView().endTurn(new PrintWriter(output), new Scanner(input), game.getCurrentPlayer());
+        String result = output.toString();
+
+        assertTrue(result.contains("The turn of " + p4 + " has ended"));
+        assertTrue(result.contains("Press 'ENTER' to confirm the end of your turn"));
+        assertTrue(result.contains("\n"));
     }
 
 
