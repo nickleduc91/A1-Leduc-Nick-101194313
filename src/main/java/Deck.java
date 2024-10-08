@@ -5,9 +5,11 @@ import java.util.List;
 public class Deck <T> {
 
     private List<T> cards;
+    private List<T> discardPile;
 
     public Deck() {
         cards = new ArrayList<>();
+        discardPile = new ArrayList<>();
     }
 
     public void addCard(T card) {
@@ -18,7 +20,10 @@ public class Deck <T> {
         if (!cards.isEmpty()) {
             return cards.removeFirst();
         }
-        return null;
+        cards.addAll(discardPile);
+        shuffleCards();
+        discardPile.clear();
+        return cards.removeFirst();
     }
 
     public void setDeck(List<T> newCards) { cards = newCards; }

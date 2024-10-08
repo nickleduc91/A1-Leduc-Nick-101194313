@@ -124,15 +124,11 @@ public class Game {
     public Deck<EventCard> getEventDeck() { return eventDeck; }
     public Deck<AdventureCard> getAdventureDeck() { return adventureDeck; }
 
-    public Deck<EventCard> getEventDiscardDeck() { return new Deck<>(); }
-
     public void shuffleAdventureDeck() { adventureDeck.shuffleCards(); }
     public void shuffleEventDeck() { eventDeck.shuffleCards(); }
 
     public int getEventDeckSize() { return eventDeck.getSize(); }
     public int getAdventureDeckSize() { return adventureDeck.getSize(); }
-
-    public int getEventDiscardDeckSize() { return 100; }
 
     public View getView() { return view; }
 }
