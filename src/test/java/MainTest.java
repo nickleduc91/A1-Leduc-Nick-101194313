@@ -591,5 +591,59 @@ class MainTest {
         assertTrue(result.contains("\n"));
     }
 
+    //RESP-10 Tests
+    @Test
+    @DisplayName("The game draws an Event Card but there are none left, and uses the shuffled discard deck instead")
+    void RESP_10_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        int initialDeckSize = game.getEventDeckSize();
+
+        // Remove all cards from the Event Deck and place them in the discard deck
+        for (int i = 0; i < initialDeckSize; i++) {
+            EventCard drawnCard = game.drawEventCard();
+            game.getEventDiscardDeck().addCard(drawnCard);
+        }
+
+        assertEquals(0, game.getEventDeckSize());
+        assertEquals(initialDeckSize, game.getEventDiscardDeckSize());
+
+        // Trigger the re-shuffle of the discard pile
+        game.drawEventCard();
+
+        assertEquals(initialDeckSize - 1, game.getEventDeckSize());
+        assertTrue(game.getEventDiscardDeck().getCards().isEmpty());
+    }
+
+    @Test
+    @DisplayName("The discard pile is shuffled before being reused as the Event deck")
+    void RESP_10_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        int initialDeckSize = game.getEventDeckSize();
+
+        // Remove all cards from the Event Deck and place them in the discard deck
+        for (int i = 0; i < initialDeckSize; i++) {
+            EventCard drawnCard = game.drawEventCard();
+            game.getEventDiscardDeck().addCard(drawnCard);
+        }
+
+        assertEquals(0, game.getEventDeckSize());
+        assertEquals(initialDeckSize, game.getEventDiscardDeckSize());
+
+        // Check that the first card of the discard pile is not the first card that appears in the Event deck after drawing from empty deck
+        EventCard originalDiscardCard = new EventCard(game.getEventDiscardDeck().getCards().getFirst().getType());
+        // Trigger the re-shuffle of the discard pile
+        game.drawEventCard();
+        assertNotEquals(originalDiscardCard, game.getEventDeck().getCards().getFirst());
+
+        assertEquals(initialDeckSize - 1, game.getEventDeckSize());
+        assertTrue(game.getEventDiscardDeck().getCards().isEmpty());
+    }
+
 
 }
