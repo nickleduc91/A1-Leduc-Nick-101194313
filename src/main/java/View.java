@@ -8,7 +8,9 @@ import java.util.*;
 public class View {
 
     public void displayEventCard(PrintWriter output, EventCard card) {
-
+        output.println("Drawn Card: " + card.toString());
+        output.println();
+        output.flush();
     }
 
     public void endTurn(PrintWriter output, Scanner input, Player player) {

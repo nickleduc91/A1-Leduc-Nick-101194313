@@ -25,9 +25,9 @@ public enum CardType {
     Q4("Quest", 4, "Q4"),
     Q5("Quest", 5, "Q5"),
 
-    PLAGUE("Event"),
-    QUEENS_FAVOR("Event"),
-    PROSPERITY("Event");
+    PLAGUE("Event", "PLAGUE"),
+    QUEENS_FAVOR("Event", "QUEEN'S FAVOR"),
+    PROSPERITY("Event", "PROSPERITY");
 
     private final String type;
     private final int value;
@@ -39,9 +39,10 @@ public enum CardType {
         this.name = name;
     }
 
-    CardType(String category) {
+    CardType(String category, String name) {
         this.type = category;
         this.value = 0;
+        this.name = name;
     }
 
     public String getName() { return name; }

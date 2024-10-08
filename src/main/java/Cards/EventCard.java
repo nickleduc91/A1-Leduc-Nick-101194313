@@ -12,6 +12,6 @@ public class EventCard {
         this.cardValue = cardType.getValue();
     }
 
-    public String toString() { return ""; }
+    public String toString() { return cardType.getName(); }
     public CardType getType() { return cardType; }
 }
