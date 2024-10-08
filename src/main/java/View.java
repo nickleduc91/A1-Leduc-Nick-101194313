@@ -7,7 +7,15 @@ import java.util.*;
 public class View {
 
     public void endTurn(PrintWriter output, Scanner input, Player player) {
+        output.println("The turn of " + player + " has ended");
+        output.println("Press 'ENTER' to confirm the end of your turn");
+        output.flush();
+        input.nextLine();
+        for (int i = 0; i < 25; i++) {
+            output.println("\n");
+        }
 
+        output.flush();
     }
 
     public void displayWinners(PrintWriter output, List<Player> players) {
