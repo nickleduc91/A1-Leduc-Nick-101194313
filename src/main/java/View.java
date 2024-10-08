@@ -1,10 +1,15 @@
 import Cards.AdventureCard;
+import Cards.EventCard;
 import Enums.CardType;
 
 import java.io.PrintWriter;
 import java.util.*;
 
 public class View {
+
+    public void displayEventCard(PrintWriter output, EventCard card) {
+
+    }
 
     public void endTurn(PrintWriter output, Scanner input, Player player) {
         output.println("The turn of " + player + " has ended");

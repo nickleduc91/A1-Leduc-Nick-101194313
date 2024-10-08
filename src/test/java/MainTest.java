@@ -645,5 +645,38 @@ class MainTest {
         assertTrue(game.getEventDeck().getDiscardPile().isEmpty());
     }
 
+    //RESP-11 Tests
+    @Test
+    @DisplayName("The game displays the proper drawn Event Plague Card")
+    void RESP_11_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        // Set the first card to be drawn as a plague card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
+        EventCard card = game.drawEventCard();
+        StringWriter output = new StringWriter();
+        game.getView().displayEventCard(new PrintWriter(output), card);
+        String result = output.toString();
+        assertTrue(result.contains("Drawn Card: PLAGUE"));
+    }
+
+    @Test
+    @DisplayName("The game displays the proper drawn Event Q2 Card")
+    void RESP_11_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        // Set the first card to be drawn as a plague card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q2));
+        EventCard card = game.drawEventCard();
+        StringWriter output = new StringWriter();
+        game.getView().displayEventCard(new PrintWriter(output), card);
+        String result = output.toString();
+        assertTrue(result.contains("Drawn Card: Q2"));
+    }
+
 
 }
