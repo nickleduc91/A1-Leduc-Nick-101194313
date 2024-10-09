@@ -726,5 +726,39 @@ class MainTest {
         assertEquals(0, game.getCurrentPlayer().getShields());
     }
 
+    //RESP-13 Tests
+    @Test
+    @DisplayName("Game decides how many cards to trim from players hand when hand is size 14")
+    void RESP_13_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        p1.addCardToHand(game.drawAdventureCard());
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+
+        assertEquals(14, p1.getHandSize());
+        assertEquals(2, trim);
+    }
+
+    @Test
+    @DisplayName("Game decides how many cards to trim from players hand when hand is less than 12")
+    void RESP_13_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        // Remove cards so the player has a hand of size 10 before adding a card
+        p1.getHand().removeFirst();
+        p1.getHand().removeFirst();
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+
+        assertEquals(11, p1.getHandSize());
+        assertEquals(0, trim);
+        assertEquals(11, p1.getHandSize());
+    }
+
 
 }

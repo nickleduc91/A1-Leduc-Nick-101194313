@@ -15,8 +15,9 @@ public class Player {
         this.shields = 0;
     }
 
-    public void addCardToHand(AdventureCard card) {
+    public int addCardToHand(AdventureCard card) {
         hand.add(card);
+        return -1;
     }
 
     public String toString() {
