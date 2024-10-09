@@ -1,7 +1,9 @@
 import Cards.AdventureCard;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import Enums.CardType;
 
 public class Player {
 
@@ -17,10 +19,48 @@ public class Player {
 
     public int addCardToHand(AdventureCard card) {
         hand.add(card);
+        sortHand();
         if(getHandSize() > 12) {
             return getHandSize() - 12;
         }
         return 0;
+    }
+
+    public void sortHand() {
+        List<AdventureCard> foes = new ArrayList<>();
+        List<AdventureCard> weapons = new ArrayList<>();
+
+        // Separate foes and weapons
+        for (AdventureCard card : hand) {
+            if (card.getType().isFoe()) {
+                foes.add(card);
+            } else if (card.getType().isWeapon()) {
+                weapons.add(card);
+            }
+        }
+
+        foes.sort(Comparator.comparing(AdventureCard::getValue));
+        weapons.sort(Comparator.comparing(AdventureCard::getValue));
+
+        // Sword appears before horse
+        weapons.sort((card1, card2) -> {
+            if (card1.getType() == CardType.HORSE && card2.getType() == CardType.SWORD) {
+                return 1;
+            } else if (card1.getType() == CardType.SWORD && card2.getType() == CardType.HORSE) {
+                return -1;
+            }
+            return 0;
+        });
+
+        // Add to hand
+        hand.clear();
+        hand.addAll(foes);
+        hand.addAll(weapons);
+    }
+
+    public void discard(int index, Deck<AdventureCard> deck) {
+        AdventureCard card = hand.remove(index);
+        deck.getDiscardPile().add(card);
     }
 
     public String toString() {
