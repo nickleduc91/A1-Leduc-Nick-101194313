@@ -74,17 +74,6 @@ public class View {
             }
         }
 
-        foes.sort(Comparator.comparing(AdventureCard::getValue));
-        weapons.sort(Comparator.comparing(AdventureCard::getValue));
-        weapons.sort((card1, card2) -> {
-            if(card1.getType() == CardType.HORSE && card2.getType() == CardType.SWORD) {
-                return 1;
-            } else if(card1.getType() == CardType.SWORD && card2.getType() == CardType.HORSE) {
-                return -1;
-            }
-            return 0;
-        });
-
         output.print("Foes: ");
         for (AdventureCard card : foes) {
             output.print(card + " ");
@@ -94,7 +83,7 @@ public class View {
         for (AdventureCard card : weapons) {
             output.print(card + " ");
         }
-        output.println("\n----------------------------------");
+        output.println("\n");
 
         output.flush();
     }

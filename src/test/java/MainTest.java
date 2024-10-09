@@ -835,6 +835,7 @@ class MainTest {
 
         AdventureCard card1 = p1.getHand().getFirst();
         AdventureCard card2 = p1.getHand().get(1);
+        int originalDiscardSize = game.getAdventureDeck().getDiscardPileSize();
 
         game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
         String result = output.toString();
@@ -854,6 +855,9 @@ class MainTest {
         assertEquals(12, p1.getHandSize());
         assertFalse(p1.getHand().contains(card1));
         assertFalse(p1.getHand().contains(card2));
+
+        // Assert discard deck now contains the proper size
+        assertEquals(originalDiscardSize + 2, game.getAdventureDeck().getDiscardPileSize());
     }
 
     @Test
@@ -871,9 +875,11 @@ class MainTest {
         Scanner scanner = new Scanner(input);
 
         AdventureCard card1 = p1.getHand().getLast();
+        int originalDiscardSize = game.getAdventureDeck().getDiscardPileSize();
 
         game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
         String result = output.toString();
+        System.out.println(result);
 
         String expectedSubstring = "A trim is needed for " + p1;
         String[] parts = result.split(expectedSubstring);
@@ -885,9 +891,13 @@ class MainTest {
             assertTrue(result.contains(card.getType().getName()));
         }
 
+        // Make sure the trimmed cards are not in the player's hand and the hand size is proper
         assertTrue(result.contains("The trim for " + p1 + " is complete."));
         assertEquals(12, p1.getHandSize());
         assertFalse(p1.getHand().contains(card1));
+
+        // Make sure the discard deck now contains the proper size
+        assertEquals(originalDiscardSize + 1, game.getAdventureDeck().getDiscardPileSize());
     }
 
 
