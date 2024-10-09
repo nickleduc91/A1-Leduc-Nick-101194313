@@ -29,6 +29,11 @@ public class Controller {
         if (card.getType() == CardType.PLAGUE) {
             int shields = game.getCurrentPlayer().getShields();
             game.getCurrentPlayer().addShields(shields < 2 ? -shields : -2);
+        } else if (card.getType() == CardType.QUEENS_FAVOR) {
+            game.getCurrentPlayer().addCardToHand(game.drawAdventureCard());
+            int trim = game.getCurrentPlayer().addCardToHand(game.drawAdventureCard());
+            view.trimCard(output, input, game.getCurrentPlayer(), game.getAdventureDeck(), trim);
         }
+
     }
 }
