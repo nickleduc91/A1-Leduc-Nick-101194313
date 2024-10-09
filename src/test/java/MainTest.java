@@ -818,5 +818,77 @@ class MainTest {
         }
     }
 
+    //RESP-15 Tests
+    @Test
+    @DisplayName("For 2 cards to trim, the Game properly deletes the first 2 cards from the players hand")
+    void RESP_15_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        p1.addCardToHand(game.drawAdventureCard());
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n";
+        Scanner scanner = new Scanner(input);
+
+        AdventureCard card1 = p1.getHand().getFirst();
+        AdventureCard card2 = p1.getHand().get(1);
+
+        game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
+        String result = output.toString();
+
+        String expectedSubstring = "A trim is needed for " + p1;
+        String[] parts = result.split(expectedSubstring);
+        int occurrenceCount = parts.length - 1;
+        assertEquals(2, occurrenceCount);
+
+        // Make sure the players hand is displayed
+        for(AdventureCard card : p1.getHand()) {
+            assertTrue(result.contains(card.getType().getName()));
+        }
+
+        // Make sure the trimmed cards are not in the player's hand and the hand size is proper
+        assertTrue(result.contains("The trim for " + p1 + " is complete."));
+        assertEquals(12, p1.getHandSize());
+        assertFalse(p1.getHand().contains(card1));
+        assertFalse(p1.getHand().contains(card2));
+    }
+
+    @Test
+    @DisplayName("For 1 card to trim, the Game properly deletes the last cards from the players hand")
+    void RESP_15_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+        StringWriter output = new StringWriter();
+        int lastCardIndex = p1.getHandSize() - 1;
+        String input = lastCardIndex + "\n";
+        Scanner scanner = new Scanner(input);
+
+        AdventureCard card1 = p1.getHand().getLast();
+
+        game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
+        String result = output.toString();
+
+        String expectedSubstring = "A trim is needed for " + p1;
+        String[] parts = result.split(expectedSubstring);
+        int occurrenceCount = parts.length - 1;
+        assertEquals(1, occurrenceCount);
+
+        // Make sure the players hand is displayed
+        for(AdventureCard card : p1.getHand()) {
+            assertTrue(result.contains(card.getType().getName()));
+        }
+
+        assertTrue(result.contains("The trim for " + p1 + " is complete."));
+        assertEquals(12, p1.getHandSize());
+        assertFalse(p1.getHand().contains(card1));
+    }
+
 
 }
