@@ -85,7 +85,10 @@ public class Game {
     }
 
     public void handleDrawnCard(EventCard card) {
-
+        if (card.getType() == CardType.PLAGUE) {
+            int shields = getCurrentPlayer().getShields();
+            getCurrentPlayer().addShields(shields < 2 ? -shields : -2);
+        }
     }
 
     public void updateNextPlayer() {
