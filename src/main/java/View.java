@@ -8,7 +8,17 @@ import java.util.*;
 public class View {
 
     public void trimCard(PrintWriter output, Scanner input, Player player, Deck<AdventureCard> deck, int trim) {
+        for(int i = 0; i < trim; i++) {
+            output.println("A trim is needed for " + player);
+            displayCurrentPlayerHand(output, player);
+            output.println("Input the card index you would like to delete:");
+            output.flush();
 
+            input.nextLine();
+
+            output.println();
+            output.flush();
+        }
     }
 
     public void displayEventCard(PrintWriter output, EventCard card) {
