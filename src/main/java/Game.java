@@ -84,6 +84,10 @@ public class Game {
         return false;
     }
 
+    public void handleDrawnCard(EventCard card) {
+
+    }
+
     public void updateNextPlayer() {
         if(currentPlayerIndex == 3) {
             currentPlayerIndex = 0;

@@ -678,5 +678,53 @@ class MainTest {
         assertTrue(result.contains("Drawn Card: Q2"));
     }
 
+    //RESP-12 Tests
+    @Test
+    @DisplayName("The game draws a plague card and the effect is carried out to the player who already has more than 2 shields")
+    void RESP_12_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        // Set the first card to be drawn as a plague card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
+
+        Player p1 = game.getPlayer(0);
+        p1.addShields(4);
+
+        int originalDeckCount = game.getEventDeckSize();
+        int originalShieldCount = game.getCurrentPlayer().getShields();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PLAGUE, drawnCard.getType());
+
+        game.handleDrawnCard(drawnCard);
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(originalShieldCount - 2, game.getCurrentPlayer().getShields());
+    }
+
+    @Test
+    @DisplayName("The game draws a plague card and the effect is carried out to the player who already has less than 2 shields")
+    void RESP_12_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        // Set the first card to be drawn as a plague card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
+
+        Player p1 = game.getPlayer(0);
+        p1.addShields(1);
+
+        int originalDeckCount = game.getEventDeckSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PLAGUE, drawnCard.getType());
+
+        game.handleDrawnCard(drawnCard);
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(0, game.getCurrentPlayer().getShields());
+    }
+
 
 }
