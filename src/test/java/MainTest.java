@@ -213,8 +213,7 @@ class MainTest {
     @DisplayName("Ensure the game identifies a winner when a player has exactly 7 shields")
     void RESP_04_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
@@ -225,7 +224,7 @@ class MainTest {
         p2.addShields(0);
         p3.addShields(6);
         p4.addShields(5);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
 
         assertTrue(hasWinner);
         List<Player> winners = game.getWinners();
@@ -237,8 +236,7 @@ class MainTest {
     @DisplayName("Ensure the game identifies multiple winners when more than one player has 7 shields")
     void RESP_04_Test_02() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
@@ -249,7 +247,7 @@ class MainTest {
         p2.addShields(8);
         p3.addShields(7);
         p4.addShields(0);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
 
         assertTrue(hasWinner);
         List<Player> winners = game.getWinners();
@@ -262,8 +260,7 @@ class MainTest {
     @DisplayName("Ensure the game identifies no winners after a turn if all players have <= 7 shields")
     void RESP_04_Test_03() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
@@ -274,7 +271,7 @@ class MainTest {
         p2.addShields(0);
         p3.addShields(6);
         p4.addShields(5);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
 
         assertFalse(hasWinner);
         List<Player> winners = game.getWinners();
@@ -286,14 +283,13 @@ class MainTest {
     @DisplayName("Ensure P1 starts the game and is followed up by P2")
     void RESP_05_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
 
         assertEquals(p1, game.getCurrentPlayer());
-        game.playTurn();
+        controller.playTurn();
         assertEquals(p2, game.getCurrentPlayer());
 
     }
@@ -302,15 +298,14 @@ class MainTest {
     @DisplayName("Ensure P2 starts the game and is followed up by P3")
     void RESP_05_Test_02() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p2 = game.getPlayer(1);
         Player p3 = game.getPlayer(2);
 
-        game.playTurn();
+        controller.playTurn();
         assertEquals(p2, game.getCurrentPlayer());
-        game.playTurn();
+        controller.playTurn();
         assertEquals(p3, game.getCurrentPlayer());
 
     }
@@ -319,16 +314,15 @@ class MainTest {
     @DisplayName("Ensure P3 starts the game and is followed up by P4")
     void RESP_05_Test_03() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p3 = game.getPlayer(2);
         Player p4 = game.getPlayer(3);
 
-        game.playTurn();
-        game.playTurn();
+        controller.playTurn();
+        controller.playTurn();
         assertEquals(p3, game.getCurrentPlayer());
-        game.playTurn();
+        controller.playTurn();
         assertEquals(p4, game.getCurrentPlayer());
 
     }
@@ -337,17 +331,16 @@ class MainTest {
     @DisplayName("Ensure P4 starts the game and is followed up by P1")
     void RESP_05_Test_04() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p4 = game.getPlayer(3);
 
-        game.playTurn();
-        game.playTurn();
-        game.playTurn();
+        controller.playTurn();
+        controller.playTurn();
+        controller.playTurn();
         assertEquals(p4, game.getCurrentPlayer());
-        game.playTurn();
+        controller.playTurn();
         assertEquals(p1, game.getCurrentPlayer());
 
     }
@@ -357,8 +350,7 @@ class MainTest {
     @DisplayName("Ensure the game displays the id of the winning player when there are real winners")
     void RESP_06_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
@@ -369,7 +361,7 @@ class MainTest {
         p2.addShields(8);
         p3.addShields(7);
         p4.addShields(0);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
         assertTrue(hasWinner);
 
         StringWriter output = new StringWriter();
@@ -386,8 +378,7 @@ class MainTest {
     @DisplayName("There are no winners and the game indicates it is the turn of the next player")
     void RESP_07_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p1 = game.getPlayer(0);
         Player p2 = game.getPlayer(1);
@@ -398,7 +389,7 @@ class MainTest {
         p2.addShields(1);
         p3.addShields(2);
         p4.addShields(0);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
         assertFalse(hasWinner);
 
         StringWriter output = new StringWriter();
@@ -414,11 +405,10 @@ class MainTest {
     @DisplayName("There are no winners and the game displays the hand of the current player")
     void RESP_08_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p2 = game.getPlayer(1);
-        boolean hasWinner = game.playTurn();
+        boolean hasWinner = controller.playTurn();
         assertFalse(hasWinner);
 
         StringWriter output = new StringWriter();
@@ -532,11 +522,10 @@ class MainTest {
     @DisplayName("The game properly indicates that the turn of the current player (p2) has ended and clears the display")
     void RESP_09_Test_02() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p2 = game.getPlayer(1);
-        game.playTurn();
+        controller.playTurn();
 
         StringWriter output = new StringWriter();
         String input = "\n";
@@ -552,12 +541,11 @@ class MainTest {
     @DisplayName("The game properly indicates that the turn of the current player (p3) has ended and clears the display")
     void RESP_09_Test_03() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p3 = game.getPlayer(2);
-        game.playTurn();
-        game.playTurn();
+        controller.playTurn();
+        controller.playTurn();
 
         StringWriter output = new StringWriter();
         String input = "\n";
@@ -573,13 +561,12 @@ class MainTest {
     @DisplayName("The game properly indicates that the turn of the current player (p4) has ended and clears the display")
     void RESP_09_Test_04() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         Player p4 = game.getPlayer(3);
-        game.playTurn();
-        game.playTurn();
-        game.playTurn();
+        controller.playTurn();
+        controller.playTurn();
+        controller.playTurn();
 
         StringWriter output = new StringWriter();
         String input = "\n";
@@ -683,8 +670,7 @@ class MainTest {
     @DisplayName("The game draws a plague card and the effect is carried out to the player who already has more than 2 shields")
     void RESP_12_Test_01() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         // Set the first card to be drawn as a plague card
         game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
@@ -697,7 +683,7 @@ class MainTest {
         EventCard drawnCard = game.drawEventCard();
         assertEquals(CardType.PLAGUE, drawnCard.getType());
 
-        game.handleDrawnCard(drawnCard);
+        controller.handleDrawnECard(drawnCard, new PrintWriter(System.out), new Scanner(System.in));
 
         assertEquals(originalDeckCount - 1, game.getEventDeckSize());
         assertEquals(originalShieldCount - 2, game.getCurrentPlayer().getShields());
@@ -707,8 +693,7 @@ class MainTest {
     @DisplayName("The game draws a plague card and the effect is carried out to the player who already has less than 2 shields")
     void RESP_12_Test_02() {
         Game game = new Game();
-        game.initializeDecks();
-        game.initializePlayers();
+        Controller controller = new Controller(game);
 
         // Set the first card to be drawn as a plague card
         game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
@@ -720,7 +705,7 @@ class MainTest {
         EventCard drawnCard = game.drawEventCard();
         assertEquals(CardType.PLAGUE, drawnCard.getType());
 
-        game.handleDrawnCard(drawnCard);
+        controller.handleDrawnECard(drawnCard, new PrintWriter(System.out), new Scanner(System.in));
 
         assertEquals(originalDeckCount - 1, game.getEventDeckSize());
         assertEquals(0, game.getCurrentPlayer().getShields());
