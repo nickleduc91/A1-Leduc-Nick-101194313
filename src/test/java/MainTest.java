@@ -760,5 +760,63 @@ class MainTest {
         assertEquals(11, p1.getHandSize());
     }
 
+    //RESP-14 Tests
+    @Test
+    @DisplayName("For 2 cards to trim, the Game properly displays the hand of that player and then chooses to discard the first card each time")
+    void RESP_14_Test_01() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        p1.addCardToHand(game.drawAdventureCard());
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n";
+        Scanner scanner = new Scanner(input);
+
+        game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
+        String result = output.toString();
+
+        String expectedSubstring = "A trim is needed for " + p1;
+        String[] parts = result.split(expectedSubstring);
+        int occurrenceCount = parts.length - 1;
+        assertEquals(2, occurrenceCount);
+
+        // Make sure the players hand is displayed
+        for(AdventureCard card : p1.getHand()) {
+            assertTrue(result.contains(card.getType().getName()));
+        }
+
+    }
+
+    @Test
+    @DisplayName("For 1 card to trim, the Game properly displays the hand of that player and then chooses to discard the last card")
+    void RESP_14_Test_02() {
+        Game game = new Game();
+        game.initializeDecks();
+        game.initializePlayers();
+
+        Player p1 = game.getCurrentPlayer();
+        int trim = p1.addCardToHand(game.drawAdventureCard());
+        StringWriter output = new StringWriter();
+        int lastCardIndex = p1.getHandSize() - 1;
+        String input = lastCardIndex + "\n";
+        Scanner scanner = new Scanner(input);
+
+        game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
+        String result = output.toString();
+
+        String expectedSubstring = "A trim is needed for " + p1;
+        String[] parts = result.split(expectedSubstring);
+        int occurrenceCount = parts.length - 1;
+        assertEquals(1, occurrenceCount);
+
+        // Make sure the players hand is displayed
+        for(AdventureCard card : p1.getHand()) {
+            assertTrue(result.contains(card.getType().getName()));
+        }
+    }
+
 
 }
