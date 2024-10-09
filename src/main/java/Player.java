@@ -17,7 +17,10 @@ public class Player {
 
     public int addCardToHand(AdventureCard card) {
         hand.add(card);
-        return -1;
+        if(getHandSize() > 12) {
+            return getHandSize() - 12;
+        }
+        return 0;
     }
 
     public String toString() {
