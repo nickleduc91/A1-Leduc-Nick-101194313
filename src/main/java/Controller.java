@@ -33,6 +33,13 @@ public class Controller {
             game.getCurrentPlayer().addCardToHand(game.drawAdventureCard());
             int trim = game.getCurrentPlayer().addCardToHand(game.drawAdventureCard());
             view.trimCard(output, input, game.getCurrentPlayer(), game.getAdventureDeck(), trim);
+        } else if (card.getType() == CardType.PROSPERITY) {
+            for(int i = 0; i < 4; i++) {
+                Player p = game.getPlayer(i);
+                p.addCardToHand(game.drawAdventureCard());
+                int trim = p.addCardToHand(game.drawAdventureCard());
+                view.trimCard(output, input, p, game.getAdventureDeck(), trim);
+            }
         }
 
     }
