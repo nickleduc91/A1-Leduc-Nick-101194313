@@ -943,5 +943,112 @@ class MainTest {
         assertTrue(result.contains("A trim is needed for " + p1));
     }
 
+    // RESP-17 Tests
+    @Test
+    @DisplayName("The game draws a Prosperity card and the effect is carried out, no players need to trim since they are all at 10 cards")
+    void RESP_17_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Set the first card to be drawn as a Prosperity card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PROSPERITY));
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        // Make sure all players have 10 cards
+        p1.discard(0, game.getAdventureDeck());
+        p1.discard(0, game.getAdventureDeck());
+        p2.discard(0, game.getAdventureDeck());
+        p2.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+        p4.discard(0, game.getAdventureDeck());
+        p4.discard(0, game.getAdventureDeck());
+
+        int originalDeckCount = game.getEventDeckSize();
+        int originalAdventureDeckCount = game.getAdventureDeckSize();
+
+        int p1OriginalHandCount = p1.getHandSize();
+        int p2OriginalHandCount = p2.getHandSize();
+        int p3OriginalHandCount = p3.getHandSize();
+        int p4OriginalHandCount = p4.getHandSize();
+
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PROSPERITY, drawnCard.getType());
+
+        StringWriter output = new StringWriter();
+        String input = "\n";
+        Scanner scanner = new Scanner(input);
+
+        controller.handleDrawnECard(drawnCard, new PrintWriter(output), scanner);
+        String result = output.toString();
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(originalAdventureDeckCount - 8, game.getAdventureDeckSize());
+
+        assertEquals(p1OriginalHandCount + 2, p1.getHandSize());
+        assertEquals(p2OriginalHandCount + 2, p2.getHandSize());
+        assertEquals(p3OriginalHandCount + 2, p3.getHandSize());
+        assertEquals(p4OriginalHandCount + 2, p4.getHandSize());
+
+        assertFalse(result.contains("A trim is needed for " + p1));
+        assertFalse(result.contains("A trim is needed for " + p2));
+        assertFalse(result.contains("A trim is needed for " + p3));
+        assertFalse(result.contains("A trim is needed for " + p4));
+    }
+
+    @Test
+    @DisplayName("The game draws a Prosperity card and the effect is carried out,  players 1 and 4 need to trim since they are all at 12 cards")
+    void RESP_17_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Set the first card to be drawn as a Prosperity card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PROSPERITY));
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        // Make sure all players have 10 cards
+        p2.discard(0, game.getAdventureDeck());
+        p2.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+
+        int originalDeckCount = game.getEventDeckSize();
+        int originalAdventureDeckCount = game.getAdventureDeckSize();
+
+        int p2OriginalHandCount = p2.getHandSize();
+        int p3OriginalHandCount = p3.getHandSize();
+
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PROSPERITY, drawnCard.getType());
+
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n0\n0\n";
+        Scanner scanner = new Scanner(input);
+
+        controller.handleDrawnECard(drawnCard, new PrintWriter(output), scanner);
+        String result = output.toString();
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(originalAdventureDeckCount - 8, game.getAdventureDeckSize());
+
+        assertEquals(12, p1.getHandSize());
+        assertEquals(p2OriginalHandCount + 2, p2.getHandSize());
+        assertEquals(p3OriginalHandCount + 2, p3.getHandSize());
+        assertEquals(12, p4.getHandSize());
+
+        assertTrue(result.contains("A trim is needed for " + p1));
+        assertFalse(result.contains("A trim is needed for " + p2));
+        assertFalse(result.contains("A trim is needed for " + p3));
+        assertTrue(result.contains("A trim is needed for " + p4));
+    }
+
 
 }
