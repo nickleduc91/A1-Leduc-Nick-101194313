@@ -885,5 +885,63 @@ class MainTest {
         assertEquals(originalDiscardSize + 1, game.getAdventureDeck().getDiscardPileSize());
     }
 
+    @Test
+    @DisplayName("The game draws a Queen's Favor card and the effect is carried out to the player who has 10 cards thus the trim does not occur")
+    void RESP_16_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Set the first card to be drawn as a Queens Favor card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.QUEENS_FAVOR));
+
+        Player p1 = game.getCurrentPlayer();
+        p1.discard(0, game.getAdventureDeck());
+        p1.discard(0, game.getAdventureDeck());
+
+        int originalDeckCount = game.getEventDeckSize();
+        int originalHandCount = game.getCurrentPlayer().getHandSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.QUEENS_FAVOR, drawnCard.getType());
+
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n";
+        Scanner scanner = new Scanner(input);
+
+        controller.handleDrawnECard(drawnCard, new PrintWriter(output), scanner);
+        String result = output.toString();
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(originalHandCount + 2, game.getCurrentPlayer().getHandSize());
+        assertFalse(result.contains("A trim is needed for " + p1));
+    }
+
+    @Test
+    @DisplayName("The game draws a Queen's Favor card and the effect is carried out to the player who already has 12 cards and thus a trim occurs")
+    void RESP_16_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Set the first card to be drawn as a Queens Favor card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.QUEENS_FAVOR));
+
+        Player p1 = game.getCurrentPlayer();
+
+        int originalDeckCount = game.getEventDeckSize();
+        int originalHandCount = game.getCurrentPlayer().getHandSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.QUEENS_FAVOR, drawnCard.getType());
+
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n";
+        Scanner scanner = new Scanner(input);
+
+        controller.handleDrawnECard(drawnCard, new PrintWriter(output), scanner);
+        String result = output.toString();
+
+        assertEquals(originalDeckCount - 1, game.getEventDeckSize());
+        assertEquals(originalHandCount, game.getCurrentPlayer().getHandSize());
+        assertTrue(result.contains("A trim is needed for " + p1));
+    }
+
 
 }
