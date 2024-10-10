@@ -17,6 +17,10 @@ public class Player {
         this.shields = 0;
     }
 
+    public int getIndex() {
+        return 10;
+    }
+
     public int addCardToHand(AdventureCard card) {
         hand.add(card);
         sortHand();

@@ -1128,4 +1128,78 @@ class MainTest {
 
     }
 
+    //RESP-18 Tests
+    @Test
+    @DisplayName("The game checks for a sponsor and the current player (p1) chooses to be the sponsor")
+    void RESP_19_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        String result = output.toString();
+        assertEquals(sponsorIndex, game.getCurrentPlayer().getIndex());
+        assertTrue(result.contains(game.getCurrentPlayer().toString() + " is the sponsor"));
+    }
+
+    @Test
+    @DisplayName("The game checks for a sponsor and the player after the current one (p2) chooses to be the sponsor")
+    void RESP_19_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "no\nyes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        String result = output.toString();
+
+        int currentPlayerId = game.getCurrentPlayer().getIndex();
+        int expectedSponsorId = (currentPlayerId + 1) % 4;
+
+        assertEquals(sponsorIndex, expectedSponsorId);
+        assertTrue(result.contains(game.getPlayer(expectedSponsorId).toString() + " is the sponsor"));
+    }
+
+    @Test
+    @DisplayName("The game checks for a sponsor and the player 2 positions after the current one (p3) chooses to be the sponsor")
+    void RESP_19_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "no\nno\nyes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        String result = output.toString();
+
+        int currentPlayerId = game.getCurrentPlayer().getIndex();
+        int expectedSponsorId = (currentPlayerId + 2) % 4;
+
+        assertEquals(sponsorIndex, expectedSponsorId);
+        assertTrue(result.contains(game.getPlayer(expectedSponsorId).toString() + " is the sponsor"));
+    }
+
+    @Test
+    @DisplayName("The game checks for a sponsor and the player 3 positions after the current one (p4) chooses to be the sponsor")
+    void RESP_19_Test_04() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "no\nno\nno\nyes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        String result = output.toString();
+
+        int currentPlayerId = game.getCurrentPlayer().getIndex();
+        int expectedSponsorId = (currentPlayerId + 3) % 4;
+
+        assertEquals(sponsorIndex, expectedSponsorId);
+        assertTrue(result.contains(game.getPlayer(expectedSponsorId).toString() + " is the sponsor"));
+    }
+
+
 }

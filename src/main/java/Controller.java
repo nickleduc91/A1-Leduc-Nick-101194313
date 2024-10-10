@@ -16,6 +16,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public int getSponsor(PrintWriter output, Scanner input) {
+        return -1;
+    }
+
     public boolean playTurn() {
         if (game.hasWinner()) {
             return true;
