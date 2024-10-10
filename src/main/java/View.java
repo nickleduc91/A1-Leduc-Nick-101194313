@@ -7,6 +7,19 @@ import java.util.*;
 
 public class View {
 
+    public boolean getSponsor(PrintWriter output, Scanner input, int index) {
+        output.println("Would you like to sponsor the quest? (yes/no)");
+        output.flush();
+
+        String response = input.nextLine();
+        if(response.equals("yes")) {
+            output.println("Player ID: P" + (index + 1) + " is the sponsor of this quest");
+            output.println("\n");
+            output.flush();
+        }
+        return (response.equals("yes"));
+    }
+
     public void trimCard(PrintWriter output, Scanner input, Player player, Deck<AdventureCard> deck, int trim) {
         if(trim == 0) return;
 

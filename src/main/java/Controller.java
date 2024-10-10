@@ -17,7 +17,16 @@ public class Controller {
     }
 
     public int getSponsor(PrintWriter output, Scanner input) {
-        return -1;
+        int i = game.getCurrentPlayer().getIndex();
+
+        while (true) {
+            boolean sponsor = view.getSponsor(output, input, i);
+            if(sponsor) {
+                return i;
+            }
+            i = (i + 1) % 4;
+        }
+
     }
 
     public boolean playTurn() {
