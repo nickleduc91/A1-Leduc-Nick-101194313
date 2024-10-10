@@ -41,6 +41,6 @@ public class Controller {
                 view.trimCard(output, input, p, game.getAdventureDeck(), trim);
             }
         }
-
+        game.getEventDeck().getDiscardPile().add(card);
     }
 }
