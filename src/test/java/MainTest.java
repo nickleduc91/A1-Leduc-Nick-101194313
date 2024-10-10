@@ -1050,5 +1050,82 @@ class MainTest {
         assertTrue(result.contains("A trim is needed for " + p4));
     }
 
+    //RESP-18 Tests
+    @Test
+    @DisplayName("The game carries out the event of a Plague card, and then discards it")
+    void RESP_18_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Set the first card to be drawn as a plague card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
+
+        int originalDiscardCount = game.getEventDeck().getDiscardPileSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PLAGUE, drawnCard.getType());
+        controller.handleDrawnECard(drawnCard, new PrintWriter(System.out), new Scanner(System.in));
+
+        assertEquals(originalDiscardCount + 1, game.getEventDeck().getDiscardPileSize());
+        assertEquals(game.getEventDeck().getDiscardPile().getLast(), drawnCard);
+
+    }
+
+    @Test
+    @DisplayName("The game carries out the event of a Queens Favor card, and then discards it")
+    void RESP_18_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        // Make sure a discard does not occur
+        Player p1 = game.getCurrentPlayer();
+        p1.discard(0, game.getAdventureDeck());
+        p1.discard(0, game.getAdventureDeck());
+
+        // Set the first card to be drawn as a Queens Favor card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.QUEENS_FAVOR));
+
+        int originalDiscardCount = game.getEventDeck().getDiscardPileSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.QUEENS_FAVOR, drawnCard.getType());
+        controller.handleDrawnECard(drawnCard, new PrintWriter(System.out), new Scanner(System.in));
+
+        assertEquals(originalDiscardCount + 1, game.getEventDeck().getDiscardPileSize());
+        assertEquals(game.getEventDeck().getDiscardPile().getLast(), drawnCard);
+
+    }
+
+    @Test
+    @DisplayName("The game carries out the event of a Prosperity card, and then discards it")
+    void RESP_18_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        // Make sure all players have 10 cards so no trim occurs
+        p1.discard(0, game.getAdventureDeck());
+        p1.discard(0, game.getAdventureDeck());
+        p2.discard(0, game.getAdventureDeck());
+        p2.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+        p3.discard(0, game.getAdventureDeck());
+        p4.discard(0, game.getAdventureDeck());
+        p4.discard(0, game.getAdventureDeck());
+
+        // Set the first card to be drawn as a Prosperity card
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PROSPERITY));
+
+        int originalDiscardCount = game.getEventDeck().getDiscardPileSize();
+        EventCard drawnCard = game.drawEventCard();
+        assertEquals(CardType.PROSPERITY, drawnCard.getType());
+        controller.handleDrawnECard(drawnCard, new PrintWriter(System.out), new Scanner(System.in));
+
+        assertEquals(originalDiscardCount + 1, game.getEventDeck().getDiscardPileSize());
+        assertEquals(game.getEventDeck().getDiscardPile().getLast(), drawnCard);
+
+    }
 
 }
