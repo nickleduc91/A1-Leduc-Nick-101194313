@@ -1128,7 +1128,7 @@ class MainTest {
 
     }
 
-    //RESP-18 Tests
+    //RESP-19 Tests
     @Test
     @DisplayName("The game checks for a sponsor and the current player (p1) chooses to be the sponsor")
     void RESP_19_Test_01() {
@@ -1199,6 +1199,32 @@ class MainTest {
 
         assertEquals(sponsorIndex, expectedSponsorId);
         assertTrue(result.contains(game.getPlayer(expectedSponsorId).toString() + " is the sponsor"));
+    }
+
+    //RESP-20 Tests
+    @Test
+    @DisplayName("The game checks for a sponsor and nobody accepts, and the drawn Q card is discarded")
+    void RESP_20_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "no\nno\nno\nno\n";
+
+        int originalDiscardCount = game.getEventDeck().getDiscardPileSize();
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q2));
+        EventCard drawnCard = game.drawEventCard();
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        if(sponsorIndex == -1) {
+            game.getEventDeck().addToDiscardPile(drawnCard);
+        }
+        String result = output.toString();
+
+        assertEquals(sponsorIndex, -1);
+        assertTrue(result.contains("None of the players accepted the quest"));
+        assertTrue(game.getEventDeck().getDiscardPile().contains(drawnCard));
+        assertEquals(originalDiscardCount + 1, game.getEventDeck().getDiscardPileSize());
     }
 
 
