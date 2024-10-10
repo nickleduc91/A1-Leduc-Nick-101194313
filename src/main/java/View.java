@@ -7,6 +7,12 @@ import java.util.*;
 
 public class View {
 
+    public void displayMessage(PrintWriter output, String message) {
+        output.println(message);
+        output.println("\n");
+        output.flush();
+    }
+
     public boolean getSponsor(PrintWriter output, Scanner input, int index) {
         output.println("Would you like to sponsor the quest? (yes/no)");
         output.flush();

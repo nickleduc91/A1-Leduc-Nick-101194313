@@ -28,10 +28,10 @@ public class Controller {
             i = (i + 1) % 4;
 
             if(i == currentPlayerIndex) {
-                break;
+                view.displayMessage(output, "None of the players accepted the quest");
+                return -1;
             }
         }
-        return i;
 
     }
 
