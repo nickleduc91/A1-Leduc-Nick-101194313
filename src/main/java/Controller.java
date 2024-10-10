@@ -17,7 +17,8 @@ public class Controller {
     }
 
     public int getSponsor(PrintWriter output, Scanner input) {
-        int i = game.getCurrentPlayer().getIndex();
+        int currentPlayerIndex = game.getCurrentPlayer().getIndex();
+        int i = currentPlayerIndex;
 
         while (true) {
             boolean sponsor = view.getSponsor(output, input, i);
@@ -25,7 +26,12 @@ public class Controller {
                 return i;
             }
             i = (i + 1) % 4;
+
+            if(i == currentPlayerIndex) {
+                break;
+            }
         }
+        return i;
 
     }
 
@@ -54,6 +60,6 @@ public class Controller {
                 view.trimCard(output, input, p, game.getAdventureDeck(), trim);
             }
         }
-        game.getEventDeck().getDiscardPile().add(card);
+        game.getEventDeck().addToDiscardPile(card);
     }
 }
