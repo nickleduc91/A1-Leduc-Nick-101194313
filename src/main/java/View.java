@@ -7,6 +7,12 @@ import java.util.*;
 
 public class View {
 
+    int getQuestPosition(PrintWriter output, Scanner input) {
+        output.println("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage");
+        output.flush();
+        return -1;
+    }
+
     public void displayMessage(PrintWriter output, String message) {
         output.println(message);
         output.println("\n");
