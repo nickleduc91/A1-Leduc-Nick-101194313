@@ -1251,5 +1251,55 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("Ensure the sponsors deck is displayed and the sponsor is prompted to either quit or choose a card, and the sponsor picks the first card")
+    void RESP_21_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+        String input2 = "0\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        controller.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getPlayer(sponsorIndex));
+        int position = controller.getView().getQuestPosition(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(position, 0);
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage"));
+        for (AdventureCard card : game.getPlayer(sponsorIndex).getHand()) {
+            String expectedOutput = card.toString();
+            assertTrue(result.contains(expectedOutput));
+        }
+
+    }
+
+    @Test
+    @DisplayName("Ensure the sponsors deck is displayed and the sponsor is prompted to either quit or choose a card, and the sponsor picks to quit")
+    void RESP_21_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+        String input2 = "q\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        controller.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getPlayer(sponsorIndex));
+        int position = controller.getView().getQuestPosition(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(position, -1);
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage"));
+        for (AdventureCard card : game.getPlayer(sponsorIndex).getHand()) {
+            String expectedOutput = card.toString();
+            assertTrue(result.contains(expectedOutput));
+        }
+
+    }
+
 
 }
