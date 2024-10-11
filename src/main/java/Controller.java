@@ -17,7 +17,6 @@ public class Controller {
     }
 
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor) {
-        view.displayMessage(output, "Sponsor " + sponsor);
         view.displayCurrentPlayerHand(output, sponsor);
         int position = view.getQuestPosition(output, input);
     }

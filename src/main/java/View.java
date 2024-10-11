@@ -15,7 +15,6 @@ public class View {
 
     public void displayMessage(PrintWriter output, String message) {
         output.println(message);
-        output.println("\n");
         output.flush();
     }
 
@@ -26,7 +25,6 @@ public class View {
         String response = input.nextLine();
         if(response.equals("yes")) {
             output.println("Player ID: P" + (index + 1) + " is the sponsor of this quest");
-            output.println("\n");
             output.flush();
         }
         return (response.equals("yes"));
@@ -45,7 +43,6 @@ public class View {
             int cardIndex = Integer.parseInt(inputStr);
             player.discard(cardIndex, deck);
             output.println("Discarded card at index " + cardIndex);
-            output.println();
             output.flush();
         }
 
@@ -56,7 +53,6 @@ public class View {
 
     public void displayEventCard(PrintWriter output, EventCard card) {
         output.println("Drawn Card: " + card.toString());
-        output.println();
         output.flush();
     }
 
@@ -90,7 +86,7 @@ public class View {
         List<AdventureCard> foes = new ArrayList<>();
         List<AdventureCard> weapons = new ArrayList<>();
 
-        output.println("HAND:");
+        output.println(player + " - HAND:");
         for (AdventureCard card : player.getHand()) {
             if (card.getType().isFoe()) {
                 foes.add(card);
@@ -108,7 +104,8 @@ public class View {
         for (AdventureCard card : weapons) {
             output.print(card + " ");
         }
-        output.println("\n");
+        output.println();
+        output.println();
 
         output.flush();
     }
