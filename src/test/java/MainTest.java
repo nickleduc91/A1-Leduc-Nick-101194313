@@ -1227,5 +1227,28 @@ class MainTest {
         assertEquals(originalDiscardCount + 1, game.getEventDeck().getDiscardPileSize());
     }
 
+    //RESP-21 Tests
+    @Test
+    @DisplayName("Ensure the sponsors deck is displayed and the sponsor is prompted to either quit or choose a card")
+    void RESP_21_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        controller.setupQuest(new PrintWriter(output), new Scanner(System.in), game.getPlayer(sponsorIndex));
+        String result = output.toString();
+        System.out.println(result);
+        assertTrue(result.contains("HAND:"));
+        assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage"));
+        for (AdventureCard card : game.getPlayer(sponsorIndex).getHand()) {
+            String expectedOutput = card.toString();
+            assertTrue(result.contains(expectedOutput));
+        }
+
+    }
+
 
 }

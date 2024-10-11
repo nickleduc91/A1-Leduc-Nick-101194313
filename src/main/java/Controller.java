@@ -16,6 +16,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public void setupQuest(PrintWriter output, Scanner input, Player sponsor) {
+
+    }
+
     public int getSponsor(PrintWriter output, Scanner input) {
         int currentPlayerIndex = game.getCurrentPlayer().getIndex();
         int i = currentPlayerIndex;
