@@ -67,4 +67,6 @@ public class Controller {
         }
         game.getEventDeck().addToDiscardPile(card);
     }
+
+    public View getView() { return view; }
 }

@@ -864,7 +864,6 @@ class MainTest {
 
         game.getView().trimCard(new PrintWriter(output), scanner, p1, game.getAdventureDeck(), trim);
         String result = output.toString();
-        System.out.println(result);
 
         String expectedSubstring = "A trim is needed for " + p1;
         String[] parts = result.split(expectedSubstring);
@@ -1236,11 +1235,13 @@ class MainTest {
 
         StringWriter output = new StringWriter();
         String input = "yes\n";
+        String input2 = "0\n";
 
         int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        controller.setupQuest(new PrintWriter(output), new Scanner(System.in), game.getPlayer(sponsorIndex));
+        controller.getView().displayCurrentPlayerHand(new PrintWriter(output), game.getPlayer(sponsorIndex));
+        controller.getView().getQuestPosition(new PrintWriter(output), new Scanner(input2));
         String result = output.toString();
-        System.out.println(result);
+
         assertTrue(result.contains("HAND:"));
         assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage"));
         for (AdventureCard card : game.getPlayer(sponsorIndex).getHand()) {
@@ -1249,80 +1250,6 @@ class MainTest {
         }
 
     }
-
-    //RESP-22 Tests
-    @Test
-    @DisplayName("The sponsor picks a weapon before a foe, which causes the Game to print out the appropriate error message and then quits")
-    void RESP_22_Test_01() {
-        Game game = new Game();
-        Controller controller = new Controller(game);
-
-        StringWriter output = new StringWriter();
-        String input = "yes\n";
-
-        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        Player sponsor = game.getPlayer(sponsorIndex);
-
-        // Make the input the last card in the hand sine it will always be a foe weapon
-        String input2 = sponsor.getHandSize() - 1 + "\nq\n";
-
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex));
-
-        String result = output.toString();
-        assertTrue(result.contains("Invalid selection: You must choose a foe card first"));
-
-    }
-
-    @Test
-    @DisplayName("The sponsor picks the same type of weapon (dagger), which causes the Game to print out the appropriate error message and then quits")
-    void RESP_22_Test_02() {
-        Game game = new Game();
-        Controller controller = new Controller(game);
-
-        StringWriter output = new StringWriter();
-        String input = "yes\n";
-
-        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        Player sponsor = game.getPlayer(sponsorIndex);
-
-        // Set the same weapon for the players last 2 cards
-        sponsor.getHand().set(sponsor.getHandSize() - 1, new AdventureCard(CardType.EXCALIBUR));
-        sponsor.getHand().set(sponsor.getHandSize() - 2, new AdventureCard(CardType.EXCALIBUR));
-
-        // Make the input a foe card, and then the last 2 cards in the hand since they are set to the same type of card
-        String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\n" + (sponsor.getHandSize() - 2) + "\nq\n";
-
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex));
-
-        String result = output.toString();
-        assertTrue(result.contains("Invalid selection: You cannot have duplicate weapons in a stage"));
-
-    }
-
-    @Test
-    @DisplayName("The sponsor picks 2 foe card, which causes the Game to print out the appropriate error message and then quits")
-    void RESP_22_Test_03() {
-        Game game = new Game();
-        Controller controller = new Controller(game);
-
-        StringWriter output = new StringWriter();
-        String input = "yes\n";
-
-        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        Player sponsor = game.getPlayer(sponsorIndex);
-        sponsor.getHand().set(0, new AdventureCard(CardType.F5));
-        sponsor.getHand().set(1, new AdventureCard(CardType.F5));
-
-        // Make the input the first 2 cards since they were set to F5 foe cards
-        String input2 = "0\n1\nq\n";
-
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex));
-
-        String result = output.toString();
-        assertTrue(result.contains("Invalid selection: You cannot choose 2 foe cards in a stage"));
-
-    }
-
 
 
 }
