@@ -12,6 +12,7 @@ public class Game {
     private final List<Player> players;
     private int currentPlayerIndex;
     private final View view;
+    private ArrayList<ArrayList<AdventureCard>> quest;
 
     public Game() {
         eventDeck = new Deck<>();
@@ -19,9 +20,10 @@ public class Game {
         this.players = new ArrayList<>();
         this.currentPlayerIndex = 0;
         this.view = new View();
+        this.quest = new ArrayList<>();
     }
 
-    public boolean isStageEmpty(int currentStage) { return false; }
+    public boolean isStageEmpty(int currentStage) { return quest.size() <= currentStage; }
 
     public void initializeDecks() {
         int[] expectedFoeCounts = {8, 7, 8, 7, 7, 4, 4, 2, 2, 1};
@@ -125,5 +127,5 @@ public class Game {
 
     public View getView() { return view; }
 
-    public ArrayList<ArrayList<AdventureCard>> getQuest() { return new ArrayList<>(); }
+    public ArrayList<ArrayList<AdventureCard>> getQuest() { return quest; }
 }
