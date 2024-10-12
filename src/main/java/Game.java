@@ -23,6 +23,14 @@ public class Game {
         this.quest = new ArrayList<>();
     }
 
+    public boolean isStageInsufficient(int currentStage) {
+        return false;
+    }
+
+    public void setCurrentStageIndex(int index) {  }
+
+    public int getCurrentStageIndex() { return -1; }
+
     public boolean isStageEmpty(int currentStage) { return quest.size() <= currentStage; }
 
     public void initializeDecks() {

@@ -1341,5 +1341,74 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("We are on the second stage, and check if it is sufficient compared to the first")
+    void RESP_23_Test_01() {
+        Game game = new Game();
+
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+
+        boolean isInsufficient = game.isStageInsufficient(1);
+        assertTrue(isInsufficient);
+
+    }
+
+    @Test
+    @DisplayName("We are on the third stage, and check if it is sufficient compared to the second")
+    void RESP_23_Test_02() {
+        Game game = new Game();
+
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F5));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F35));
+        ArrayList<AdventureCard> stage3 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F25));
+
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+        game.getQuest().add(stage3);
+
+
+        boolean isInsufficient = game.isStageInsufficient(2);
+        assertTrue(isInsufficient);
+
+    }
+
+    @Test
+    @DisplayName("The sponsor quits but the second stage is insufficient compared to the first, thus the proper error message is displayed")
+    void RESP_23_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+        String input2 = "q\n";
+
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+        game.setCurrentStageIndex(2);
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(result.contains("Error: Insufficient value for this stage"));
+        assertTrue(game.isStageInsufficient(game.getCurrentStageIndex()));
+
+    }
+
 
 }
