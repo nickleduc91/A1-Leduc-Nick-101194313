@@ -22,7 +22,7 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.view = new View();
         this.quest = new ArrayList<>();
-        this.currentPlayerIndex = 0;
+        this.currentStageIndex = 0;
     }
 
     public boolean isStageInsufficient(int currentStageIndex) {
@@ -46,7 +46,7 @@ public class Game {
 
     public int getCurrentStageIndex() { return currentStageIndex; }
 
-    public boolean isStageEmpty(int currentStage) { return quest.size() <= currentStage; }
+    public boolean isStageEmpty(int currentStage) { return quest.get(currentStage).isEmpty(); }
 
     public void initializeDecks() {
         int[] expectedFoeCounts = {8, 7, 8, 7, 7, 4, 4, 2, 2, 1};

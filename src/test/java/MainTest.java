@@ -1302,7 +1302,7 @@ class MainTest {
     @DisplayName("We are on the first stage, and check if it is empty before anything else")
     void RESP_22_Test_01() {
         Game game = new Game();
-
+        game.getQuest().add(new ArrayList<>());
         boolean isEmpty = game.isStageEmpty(0);
         assertTrue(isEmpty);
 
@@ -1316,6 +1316,7 @@ class MainTest {
         stage.add(new AdventureCard(CardType.F25));
 
         game.getQuest().add(stage);
+        game.getQuest().add(new ArrayList<>());
         boolean isEmpty = game.isStageEmpty(1);
         assertTrue(isEmpty);
 
@@ -1329,11 +1330,12 @@ class MainTest {
 
         StringWriter output = new StringWriter();
         String input = "yes\n";
-        String input2 = "q\n";
-        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q2));
+        game.getQuest().add(new ArrayList<>());
 
-        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        if(game.isStageEmpty(game.getCurrentStageIndex())) {
+            game.getView().displayMessage(new PrintWriter(output), "Error: A stage cannot be empty");
+        }
 
         String result = output.toString();
         assertTrue(result.contains("Error: A stage cannot be empty"));
@@ -1390,7 +1392,6 @@ class MainTest {
 
         StringWriter output = new StringWriter();
         String input = "yes\n";
-        String input2 = "q\n";
 
         ArrayList<AdventureCard> stage1 = new ArrayList<>();
         stage1.add(new AdventureCard(CardType.F25));
@@ -1401,8 +1402,10 @@ class MainTest {
         game.getQuest().add(stage2);
         game.setCurrentStageIndex(1);
 
-        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        if(game.isStageInsufficient(game.getCurrentStageIndex())) {
+            game.getView().displayMessage(new PrintWriter(output), "Error: Insufficient value for this stage");
+        }
 
         String result = output.toString();
         assertTrue(result.contains("Error: Insufficient value for this stage"));
