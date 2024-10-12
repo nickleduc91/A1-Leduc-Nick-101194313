@@ -25,6 +25,10 @@ public class Game {
         this.currentStageIndex = 0;
     }
 
+    public int isStageSelectionValid(AdventureCard card) {
+        return -1;
+    }
+
     public boolean isStageInsufficient(int currentStageIndex) {
         int currentValue = 0;
         ArrayList<AdventureCard> stage = quest.get(currentStageIndex);

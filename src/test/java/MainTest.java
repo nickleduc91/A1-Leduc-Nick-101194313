@@ -1413,5 +1413,79 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The sponsor picks a weapon before a foe, and we check if this is the case (status code 1)")
+    void RESP_24_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        // Make the input the last card in the hand sine it will always be a foe weapon
+        AdventureCard weaponCard = sponsor.getHand().getLast();
+
+        game.getQuest().add(new ArrayList<>());
+        int option = game.isStageSelectionValid(weaponCard);
+
+        assertEquals(1, option);
+    }
+
+    @Test
+    @DisplayName("The sponsor picks a duplicate weapons, and we check if this is the case (status code 2)")
+    void RESP_24_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        // Set the same weapon for the players last 2 cards
+        sponsor.getHand().set(sponsor.getHandSize() - 1, new AdventureCard(CardType.EXCALIBUR));
+        sponsor.getHand().set(sponsor.getHandSize() - 2, new AdventureCard(CardType.EXCALIBUR));
+
+        // Force the sponsor to pick a foe, and then pick 2 of the same weapon cards
+        AdventureCard cardFoe = sponsor.getHand().getFirst();
+        AdventureCard weaponCard1 = sponsor.getHand().getLast();
+        AdventureCard weaponCard2 = sponsor.getHand().get(sponsor.getHandSize() - 2);
+
+        game.getQuest().add(new ArrayList<>());
+        game.getQuest().getFirst().add(cardFoe);
+        game.getQuest().getFirst().add(weaponCard1);
+        int option = game.isStageSelectionValid(weaponCard2);
+
+        assertEquals(2, option);
+    }
+
+    @Test
+    @DisplayName("The sponsor picks 2 foes, and we check if this is the case (status code 3)")
+    void RESP_24_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+
+        // Force the sponsor to pick a foe, and then pick 2 of the same weapon cards
+        AdventureCard cardFoe1 = sponsor.getHand().getFirst();
+        AdventureCard cardFoe2 = sponsor.getHand().get(1);
+
+        game.getQuest().add(new ArrayList<>());
+        game.getQuest().getFirst().add(cardFoe1);
+        int option = game.isStageSelectionValid(cardFoe2);
+
+        assertEquals(3, option);
+    }
+
 
 }
