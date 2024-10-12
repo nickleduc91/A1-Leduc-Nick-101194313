@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 class MainTest {
 
@@ -1298,6 +1295,49 @@ class MainTest {
             String expectedOutput = card.toString();
             assertTrue(result.contains(expectedOutput));
         }
+
+    }
+
+    @Test
+    @DisplayName("We are on the first stage, and check if it is empty before anything else")
+    void RESP_22_Test_01() {
+        Game game = new Game();
+
+        boolean isEmpty = game.isStageEmpty(0);
+        assertTrue(isEmpty);
+
+    }
+
+    @Test
+    @DisplayName("We are on the second stage, and check if it is empty before anything else")
+    void RESP_22_Test_02() {
+        Game game = new Game();
+        ArrayList<AdventureCard> stage = new ArrayList<>();
+        stage.add(new AdventureCard(CardType.F25));
+
+        game.getQuest().add(stage);
+        boolean isEmpty = game.isStageEmpty(1);
+        assertTrue(isEmpty);
+
+    }
+
+    @Test
+    @DisplayName("The sponsor quits but the first stage has no cards associated, thus the proper error message is displayed")
+    void RESP_22_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+        String input2 = "q\n";
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q2));
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(result.contains("Error: A stage cannot be empty"));
+        assertTrue(game.isStageEmpty(0));
 
     }
 

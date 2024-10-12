@@ -16,7 +16,7 @@ public class Controller {
         game.initializePlayers();
     }
 
-    public void setupQuest(PrintWriter output, Scanner input, Player sponsor) {
+    public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {
         view.displayCurrentPlayerHand(output, sponsor);
         int position = view.getQuestPosition(output, input);
     }

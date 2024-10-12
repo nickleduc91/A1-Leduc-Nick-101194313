@@ -21,6 +21,8 @@ public class Game {
         this.view = new View();
     }
 
+    public boolean isStageEmpty(int currentStage) { return false; }
+
     public void initializeDecks() {
         int[] expectedFoeCounts = {8, 7, 8, 7, 7, 4, 4, 2, 2, 1};
         CardType[] foeCards = {CardType.F5, CardType.F10, CardType.F15, CardType.F20, CardType.F25, CardType.F30, CardType.F35, CardType.F40, CardType.F50, CardType.F70};
@@ -122,4 +124,6 @@ public class Game {
     public int getAdventureDeckSize() { return adventureDeck.getSize(); }
 
     public View getView() { return view; }
+
+    public ArrayList<ArrayList<AdventureCard>> getQuest() { return new ArrayList<>(); }
 }
