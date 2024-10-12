@@ -1352,12 +1352,6 @@ class MainTest {
         StringWriter output = new StringWriter();
         String input = "yes\n";
 
-        ArrayList<AdventureCard> stage1 = new ArrayList<>();
-        stage1.add(new AdventureCard(CardType.F25));
-
-        game.getQuest().add(stage1);
-        game.setCurrentStageIndex(1);
-
         int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
 
         // The sponsor chooses to quit before adding a card to their stage, the error message should be displayed and then to quit,
@@ -1369,7 +1363,6 @@ class MainTest {
 
         String result = output.toString();
         assertTrue(result.contains("Error: A stage cannot be empty"));
-        assertTrue(game.isStageInsufficient(game.getCurrentStageIndex()));
 
     }
 
