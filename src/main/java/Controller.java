@@ -30,6 +30,9 @@ public class Controller {
                 if (game.isStageEmpty(currentStageIndex)) {
                     view.displayMessage(output, "Error: A stage cannot be empty");
                     continue;
+                } else if (game.isStageInsufficient(currentStageIndex)) {
+                    view.displayMessage(output, "Error: Insufficient value for this stage");
+                    continue;
                 } else {
                     break;
                 }
