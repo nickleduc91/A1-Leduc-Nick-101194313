@@ -1444,6 +1444,38 @@ class MainTest {
     }
 
     @Test
+    @DisplayName("The sponsor quits but the second stage is insufficient compared to the first, thus the proper error message is displayed and the user needs to pick again to quit")
+    void RESP_23_Test_04() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+
+        game.getQuest().add(stage1);
+        game.setCurrentStageIndex(1);
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        sponsor.getHand().set(0, new AdventureCard(CardType.F5));
+        sponsor.getHand().set(1, new AdventureCard(CardType.EXCALIBUR));
+
+        // The sponsor chooses the F5 card and quits, the error message should be displayed and then to quit,
+        // the sponsor then chooses a valid selection and quits again
+        String input2 = "0\nq\n1\nq\n";
+
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(result.contains("Error: Insufficient value for this stage"));
+        assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest"));
+    }
+
+    @Test
     @DisplayName("The sponsor picks a weapon before a foe, and we check if this is the case (status code 1)")
     void RESP_24_Test_01() {
         Game game = new Game();
