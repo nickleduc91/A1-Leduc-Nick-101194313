@@ -27,7 +27,12 @@ public class Controller {
             int currentStageIndex = game.getCurrentStageIndex();
 
             if (position == -1) {
-                break;
+                if (game.isStageEmpty(currentStageIndex)) {
+                    view.displayMessage(output, "Error: A stage cannot be empty");
+                    continue;
+                } else {
+                    break;
+                }
             }
 
             AdventureCard card = sponsor.getHand().get(position);
