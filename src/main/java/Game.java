@@ -26,7 +26,42 @@ public class Game {
     }
 
     public int isStageSelectionValid(AdventureCard card) {
-        return -1;
+
+        ArrayList<AdventureCard> stage = quest.get(currentStageIndex);
+
+        // Return status code 1 if the sponsor tries to choose a Weapon card before a foe
+        if (stage.isEmpty() && !card.getType().isFoe()) {
+            return 1;
+        }
+
+        // Return status code 2 if the sponsor tries to select the same type of weapon
+        if (!stage.isEmpty() && card.getType().isWeapon()) {
+            boolean duplicate = false;
+            for (AdventureCard stageCard : stage) {
+                if (stageCard.getType().getName().equals(card.getType().getName())) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (duplicate) {
+                return 2;
+            }
+        }
+
+        // Return status code 3 if teh sponsor tries to select more tahn one foe
+        if(!stage.isEmpty() && card.getType().isFoe()) {
+            boolean duplicate = false;
+            for (AdventureCard stageCard : stage) {
+                if (stageCard.getType().isFoe()) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if(duplicate) {
+                return 3;
+            }
+        }
+        return 0;
     }
 
     public boolean isStageInsufficient(int currentStageIndex) {
