@@ -1399,7 +1399,7 @@ class MainTest {
 
         game.getQuest().add(stage1);
         game.getQuest().add(stage2);
-        game.setCurrentStageIndex(2);
+        game.setCurrentStageIndex(1);
 
         int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
         controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
