@@ -19,11 +19,13 @@ public class Controller {
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {
         view.displayCurrentPlayerHand(output, sponsor);
         int position = view.getQuestPosition(output, input);
-        int currentStage = 0;
+        int currentStageIndex = game.getCurrentStageIndex();
 
         if(position == -1) {
-            if(game.isStageEmpty(currentStage)) {
+            if(game.isStageEmpty(currentStageIndex)) {
                 view.displayMessage(output, "Error: A stage cannot be empty");
+            }else if(game.isStageInsufficient(currentStageIndex)) {
+                view.displayMessage(output, "Error: Insufficient value for this stage");
             }
         }
     }

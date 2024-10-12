@@ -13,6 +13,7 @@ public class Game {
     private int currentPlayerIndex;
     private final View view;
     private ArrayList<ArrayList<AdventureCard>> quest;
+    private int currentStageIndex;
 
     public Game() {
         eventDeck = new Deck<>();
@@ -21,15 +22,29 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.view = new View();
         this.quest = new ArrayList<>();
+        this.currentPlayerIndex = 0;
     }
 
-    public boolean isStageInsufficient(int currentStage) {
-        return false;
+    public boolean isStageInsufficient(int currentStageIndex) {
+        int currentValue = 0;
+        ArrayList<AdventureCard> stage = quest.get(currentStageIndex);
+        for(AdventureCard card : stage) {
+            currentValue += card.getValue();
+        }
+
+        int precedingValue = 0;
+        ArrayList<AdventureCard> prevStage = quest.get(currentStageIndex - 1);
+        for(AdventureCard card : prevStage) {
+            precedingValue += card.getValue();
+        }
+
+        return (currentValue < precedingValue);
+
     }
 
-    public void setCurrentStageIndex(int index) {  }
+    public void setCurrentStageIndex(int index) { currentStageIndex = index; }
 
-    public int getCurrentStageIndex() { return -1; }
+    public int getCurrentStageIndex() { return currentStageIndex; }
 
     public boolean isStageEmpty(int currentStage) { return quest.size() <= currentStage; }
 
