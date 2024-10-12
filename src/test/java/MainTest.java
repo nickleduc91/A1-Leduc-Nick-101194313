@@ -1344,6 +1344,36 @@ class MainTest {
     }
 
     @Test
+    @DisplayName("The sponsor quits but the first stage has no cards, thus the proper error message is displayed and the user is asked to choose again")
+    void RESP_22_Test_04() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+
+        StringWriter output = new StringWriter();
+        String input = "yes\n";
+
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+
+        game.getQuest().add(stage1);
+        game.setCurrentStageIndex(1);
+
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+
+        // The sponsor chooses to quit before adding a card to their stage, the error message should be displayed and then to quit,
+        // The sponsor adds a valid card and quits
+
+        String input2 = "q\n0\nq\n";
+
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(result.contains("Error: A stage cannot be empty"));
+        assertTrue(game.isStageInsufficient(game.getCurrentStageIndex()));
+
+    }
+
+    @Test
     @DisplayName("We are on the second stage, and check if it is sufficient compared to the first")
     void RESP_23_Test_01() {
         Game game = new Game();
