@@ -66,6 +66,11 @@ public class Game {
 
     public boolean isStageInsufficient(int currentStageIndex) {
         int currentValue = 0;
+
+        if(quest.size() <= 1) {
+            return false;
+        }
+
         ArrayList<AdventureCard> stage = quest.get(currentStageIndex);
         for(AdventureCard card : stage) {
             currentValue += card.getValue();

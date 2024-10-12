@@ -1,7 +1,9 @@
+import Cards.AdventureCard;
 import Cards.EventCard;
 import Enums.CardType;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Controller {
@@ -17,17 +19,34 @@ public class Controller {
     }
 
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {
+        game.getQuest().add(new ArrayList<>());
         view.displayCurrentPlayerHand(output, sponsor);
-        int position = view.getQuestPosition(output, input);
-        int currentStageIndex = game.getCurrentStageIndex();
 
-        if(position == -1) {
-            if(game.isStageEmpty(currentStageIndex)) {
-                view.displayMessage(output, "Error: A stage cannot be empty");
-            }else if(game.isStageInsufficient(currentStageIndex)) {
-                view.displayMessage(output, "Error: Insufficient value for this stage");
+        while (true) {
+            int position = view.getQuestPosition(output, input);
+            int currentStageIndex = game.getCurrentStageIndex();
+
+            if (position == -1) {
+                break;
             }
+
+            AdventureCard card = sponsor.getHand().get(position);
+            int option = game.isStageSelectionValid(card);
+
+            if (option == 1) {
+                view.displayMessage(output, "Invalid selection: You must choose a foe card first");
+                continue;
+
+            } else if (option == 2) {
+                view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in a stage");
+                continue;
+            } else if (option == 3) {
+                view.displayMessage(output,"Invalid selection: You cannot choose 2 foe cards in a stage");
+                continue;
+            }
+            game.getQuest().get(currentStageIndex).add(card);
         }
+
     }
 
     public int getSponsor(PrintWriter output, Scanner input) {
