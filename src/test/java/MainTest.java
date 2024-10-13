@@ -1614,5 +1614,69 @@ class MainTest {
         assertTrue(result.contains("Enter the index of the card in your hand you would like to add to the stage of the quest"));
     }
 
+    @Test
+    @DisplayName("The sponsor picks a valid selection (F25 D5) and the selected cards are included in the stage set, and each card is displayed when selected")
+    void RESP_26_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        String input = "yes\n";
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        AdventureCard card1 = new AdventureCard(CardType.F25);
+        AdventureCard card2 = new AdventureCard(CardType.DAGGER);
+
+        sponsor.getHand().set(0, card1);
+        sponsor.getHand().set(sponsor.getHandSize() - 1, card2);
+
+        // Make the input the first card and last card (F25 D5) and then quit
+        String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\nq\n";
+
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
+        assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card2));
+        assertTrue(result.contains("Current Stage:"));
+        assertTrue(result.contains(card1.toString()));
+        assertTrue(result.contains(card2.toString()));
+    }
+
+    @Test
+    @DisplayName("The sponsor picks a valid selection (F25 D5 D15) and the selected cards are included in the stage set, and each card is displayed when selected")
+    void RESP_26_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        String input = "yes\n";
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        AdventureCard card1 = new AdventureCard(CardType.F25);
+        AdventureCard card2 = new AdventureCard(CardType.DAGGER);
+        AdventureCard card3 = new AdventureCard(CardType.BATTLE_AXE);
+
+        sponsor.getHand().set(0, card1);
+        sponsor.getHand().set(sponsor.getHandSize() - 1, card2);
+        sponsor.getHand().set(sponsor.getHandSize() - 2, card3);
+
+        // Make the input the first card and last card (F25 D5) and then quit
+        String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\n" + (sponsor.getHandSize() - 2) + "\nq\n";
+
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+
+        String result = output.toString();
+        assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
+        assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card2));
+        assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card3));
+        assertTrue(result.contains("Current Stage:"));
+        assertTrue(result.contains(card1.toString()));
+        assertTrue(result.contains(card2.toString()));
+        assertTrue(result.contains(card3.toString()));
+    }
+
 
 }
