@@ -19,51 +19,56 @@ public class Controller {
     }
 
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {
-        game.getQuest().add(new ArrayList<>());
-        view.displayCurrentPlayerHand(output, sponsor);
 
-        while (true) {
-            int position = view.getQuestPosition(output, input);
-            int currentStageIndex = game.getCurrentStageIndex();
+        for(int i = 0; i < stages; i++) {
+            game.getQuest().add(new ArrayList<>());
+            view.displayCurrentPlayerHand(output, sponsor);
 
-            if (position == -1) {
-                if (game.isStageEmpty(currentStageIndex)) {
-                    view.displayMessage(output, "Error: A stage cannot be empty");
-                    continue;
-                } else if (game.isStageInsufficient(currentStageIndex)) {
-                    view.displayMessage(output, "Error: Insufficient value for this stage");
-                    continue;
-                } else {
-                    break;
+            while (true) {
+                int position = view.getQuestPosition(output, input);
+                int currentStageIndex = game.getCurrentStageIndex();
+
+                if (position == -1) {
+                    if (game.isStageEmpty(currentStageIndex)) {
+                        view.displayMessage(output, "Error: A stage cannot be empty");
+                        continue;
+                    } else if (game.isStageInsufficient(currentStageIndex)) {
+                        view.displayMessage(output, "Error: Insufficient value for this stage");
+                        continue;
+                    } else {
+                        break;
+                    }
                 }
+
+                AdventureCard card = sponsor.getHand().get(position);
+                int option = game.isStageSelectionValid(card);
+
+                if (option == 1) {
+                    view.displayMessage(output, "Invalid selection: You must choose a foe card first");
+                    continue;
+
+                } else if (option == 2) {
+                    view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in a stage");
+                    continue;
+                } else if (option == 3) {
+                    view.displayMessage(output,"Invalid selection: You cannot choose 2 foe cards in a stage");
+                    continue;
+                }
+                game.getQuest().get(currentStageIndex).add(card);
+                view.displayCurrentStage(output, game.getQuest().get(currentStageIndex));
             }
 
-            AdventureCard card = sponsor.getHand().get(position);
-            int option = game.isStageSelectionValid(card);
-
-            if (option == 1) {
-                view.displayMessage(output, "Invalid selection: You must choose a foe card first");
-                continue;
-
-            } else if (option == 2) {
-                view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in a stage");
-                continue;
-            } else if (option == 3) {
-                view.displayMessage(output,"Invalid selection: You cannot choose 2 foe cards in a stage");
-                continue;
+            output.println();
+            output.print("Cards for Stage " + (game.getCurrentStageIndex() + 1) + ": ");
+            for(AdventureCard card : game.getQuest().get(game.getCurrentStageIndex())) {
+                output.print(card + " ");
+                sponsor.getHand().remove(card);
             }
-            game.getQuest().get(currentStageIndex).add(card);
-            view.displayCurrentStage(output, game.getQuest().get(currentStageIndex));
+            output.println();
+            output.flush();
+            game.setCurrentStageIndex(game.getCurrentStageIndex() + 1);
         }
-
-        output.println();
-        output.print("Cards for Stage " + (game.getCurrentStageIndex() + 1) + ": ");
-        for(AdventureCard card : game.getQuest().get(game.getCurrentStageIndex())) {
-            output.print(card + " ");
-            sponsor.getHand().remove(card);
-        }
-        output.println();
-        output.flush();
+        game.setCurrentStageIndex(game.getCurrentStageIndex() - 1);
 
     }
 
