@@ -19,7 +19,16 @@ public class Controller {
     }
 
     public ArrayList<Player> getAndDisplayEligibleParticipants(PrintWriter output, int sponsorIndex) {
-        return new ArrayList<>();
+        ArrayList<Player> eligiblePlayers = new ArrayList<>();
+
+        for(int i = 0; i < 4; i++) {
+            Player p = game.getPlayer(i);
+            if(p.getIndex() == sponsorIndex || !p.getEligibility()) continue;
+            eligiblePlayers.add(p);
+        }
+
+        view.displayEligibleParticipants(output, eligiblePlayers);
+        return eligiblePlayers;
     }
 
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {

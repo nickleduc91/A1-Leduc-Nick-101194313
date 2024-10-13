@@ -10,14 +10,18 @@ public class Player {
     private final int id;
     private List<AdventureCard> hand;
     private int shields;
+    private boolean isEligible;
 
     public Player(int id) {
         this.id = id;
         this.hand = new ArrayList<>();
         this.shields = 0;
+        this.isEligible = true;
     }
 
-    public void setEligibility(boolean eligibility) {  }
+    public void setEligibility(boolean eligibility) { isEligible = eligibility; }
+
+    public boolean getEligibility() { return isEligible; }
 
     public int getIndex() { return id; }
 

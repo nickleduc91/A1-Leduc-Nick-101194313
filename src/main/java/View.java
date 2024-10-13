@@ -7,6 +7,15 @@ import java.util.*;
 
 public class View {
 
+    public void displayEligibleParticipants(PrintWriter output, ArrayList<Player> players) {
+        output.println("Eligible participants: ");
+        for(Player p : players) {
+            output.println(p.toString());
+        }
+        output.println();
+        output.flush();
+    }
+
     public void identifyStages(PrintWriter output, ArrayList<ArrayList<AdventureCard>> quest) {
         for(int i = 0; i < quest.size(); i++) {
             output.print("Stage " + (i + 1) + ": ");
