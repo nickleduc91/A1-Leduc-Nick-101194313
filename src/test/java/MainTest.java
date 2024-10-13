@@ -1783,4 +1783,60 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The sponsor creates a valid quest that has 3 stages, and each card of each stage are identified")
+    void RESP_29_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        ArrayList<AdventureCard> stage3 = new ArrayList<>();
+        stage3.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+        game.getQuest().add(stage3);
+
+        controller.getView().identifyStages(new PrintWriter(output), game.getQuest());
+        String result = output.toString();
+
+        assertTrue(result.contains("Stage 1: X"));
+        assertTrue(result.contains("Stage 2: XX"));
+        assertTrue(result.contains("Stage 3: X"));
+
+    }
+
+    @Test
+    @DisplayName("The sponsor creates a valid quest that has 2 stages, and each card of each stage are identified")
+    void RESP_29_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        controller.getView().identifyStages(new PrintWriter(output), game.getQuest());
+        String result = output.toString();
+
+        assertTrue(result.contains("Stage 1: XXX"));
+        assertTrue(result.contains("Stage 2: XXX"));
+
+    }
+
 }

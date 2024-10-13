@@ -7,6 +7,10 @@ import java.util.*;
 
 public class View {
 
+    public void identifyStages(PrintWriter output, ArrayList<ArrayList<AdventureCard>> quest) {
+
+    }
+
     int getQuestPosition(PrintWriter output, Scanner input) {
         output.println("Enter the index of the card in your hand you would like to add to the stage of the quest, or type 'q' to quit building this stage");
         output.flush();
