@@ -2030,4 +2030,41 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("All players decide to not participate and thus the quest ends")
+    void RESP_33_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        String input = "no\nno\nno";
+
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+
+        assertTrue(isQuestDone);
+
+    }
+
+    @Test
+    @DisplayName("All players are ineligible since they lost an attack, and thus the quest ends")
+    void RESP_33_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "";
+
+        game.getPlayer(1).setEligibility(false);
+        game.getPlayer(2).setEligibility(false);
+        game.getPlayer(3).setEligibility(false);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+
+        assertTrue(isQuestDone);
+    }
+
 }

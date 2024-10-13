@@ -27,6 +27,10 @@ public class Game {
         this.eligibleParticipants = new ArrayList<>();
     }
 
+    public boolean isQuestDone() {
+        return false;
+    }
+
     public void setEligibleParticipants(ArrayList<Player> eligiblePlayers) {
         this.eligibleParticipants = eligiblePlayers;
     }
