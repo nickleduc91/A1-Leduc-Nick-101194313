@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public void handleParticipation(PrintWriter output, Scanner input) {
+
+    }
+
     public ArrayList<Player> getPromptedEligiblePlayers(PrintWriter output, Scanner input) {
         ArrayList<Player> eligiblePlayers = new ArrayList<>();
 

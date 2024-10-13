@@ -2001,4 +2001,33 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The players who accept to participate each draw an adventure card, and P3 needs to trim")
+    void RESP_32_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Only ensure p3 trims
+        game.getPlayer(1).discard(0, game.getAdventureDeck());
+        game.getPlayer(1).discard(0, game.getAdventureDeck());
+        game.getPlayer(3).discard(0, game.getAdventureDeck());
+        game.getPlayer(3).discard(0, game.getAdventureDeck());
+
+        String input = "yes\nyes\nyes";
+        String input2 = "0\n0\n";
+
+        int p2OriginalHand = game.getPlayer(1).getHand().size();
+        int p4OriginalHand = game.getPlayer(3).getHand().size();
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        controller.handleParticipation(new PrintWriter(output), new Scanner(input2));
+
+        assertEquals(p2OriginalHand + 1, game.getPlayer(1).getHandSize());
+        assertEquals(12, game.getPlayer(2).getHandSize());
+        assertEquals(p4OriginalHand + 1, game.getPlayer(3).getHandSize());
+
+    }
+
 }
