@@ -1741,6 +1741,46 @@ class MainTest {
         assertFalse(sponsor.getHand().contains(card3));
     }
 
+    @Test
+    @DisplayName("The sponsor creates a valid quest that has 2 stages, first stage: F25, second stage: F5, E30")
+    void RESP_28Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
 
+        String input = "yes\n";
+        int sponsorIndex = controller.getSponsor(new PrintWriter(output), new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        AdventureCard card1 = new AdventureCard(CardType.F25);
+        AdventureCard card2 = new AdventureCard(CardType.F5);
+        AdventureCard card3 = new AdventureCard(CardType.EXCALIBUR);
+
+        sponsor.getHand().set(0, card1);
+        sponsor.getHand().set(1, card2);
+        sponsor.getHand().set(sponsor.getHandSize() - 1, card3);
+
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q2));
+        EventCard qCard = game.drawEventCard();
+
+        assertEquals(CardType.Q2, qCard.getType());
+
+        // Make the input the first (F25) then quit, then make the next inputs F5 and E30 then quit
+        String input2 = "0\nq\n0\n" + (sponsor.getHandSize() - 2) +"\nq\n";
+
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), qCard.getType().getValue());
+
+        // Ensure the cards are in their correct stage for the quest
+        assertTrue(game.getQuest().get(0).contains(card1));
+        assertTrue(game.getQuest().get(1).contains(card2));
+        assertTrue(game.getQuest().get(1).contains(card3));
+
+        assertFalse(sponsor.getHand().contains(card1));
+        assertFalse(sponsor.getHand().contains(card2));
+        assertFalse(sponsor.getHand().contains(card3));
+
+        assertEquals(1, game.getCurrentStageIndex());
+
+    }
 
 }
