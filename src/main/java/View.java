@@ -7,6 +7,15 @@ import java.util.*;
 
 public class View {
 
+    public boolean getParticipantAnswer(PrintWriter output, Scanner input, Player p) {
+        output.println(p.toString() + ", would you like to participate in this stage? (yes/no)");
+        output.flush();
+
+        String inputStr = input.nextLine();
+
+        return (inputStr.equals("yes"));
+    }
+
     public void displayEligibleParticipants(PrintWriter output, ArrayList<Player> players) {
         output.println("Eligible participants: ");
         for(Player p : players) {

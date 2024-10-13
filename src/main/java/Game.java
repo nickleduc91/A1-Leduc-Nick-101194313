@@ -14,6 +14,7 @@ public class Game {
     private final View view;
     private ArrayList<ArrayList<AdventureCard>> quest;
     private int currentStageIndex;
+    private ArrayList<Player> eligibleParticipants;
 
     public Game() {
         eventDeck = new Deck<>();
@@ -23,9 +24,14 @@ public class Game {
         this.view = new View();
         this.quest = new ArrayList<>();
         this.currentStageIndex = 0;
+        this.eligibleParticipants = new ArrayList<>();
     }
 
-    public ArrayList<Player> getEligibleParticipants() { return new ArrayList<>(); }
+    public void setEligibleParticipants(ArrayList<Player> eligiblePlayers) {
+        this.eligibleParticipants = eligiblePlayers;
+    }
+
+    public ArrayList<Player> getEligibleParticipants() { return eligibleParticipants; }
 
     public int isStageSelectionValid(AdventureCard card) {
 
@@ -140,6 +146,7 @@ public class Game {
         for(int i = 0; i < 4; i++) {
             Player player = new Player(i);
             players.add(player);
+            eligibleParticipants.add(player);
 
             // Deal 12 adventure cards
             for (int j = 0; j < 12; j++) {

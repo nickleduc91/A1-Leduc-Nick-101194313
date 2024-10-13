@@ -19,7 +19,18 @@ public class Controller {
     }
 
     public ArrayList<Player> getPromptedEligiblePlayers(PrintWriter output, Scanner input) {
-        return new ArrayList<>();
+        ArrayList<Player> eligiblePlayers = new ArrayList<>();
+
+        for(Player p: game.getEligibleParticipants()) {
+            boolean isPlaying = view.getParticipantAnswer(output, input, p);
+            if(isPlaying) {
+                eligiblePlayers.add(p);
+            } else {
+                p.setEligibility(false);
+            }
+        }
+        game.setEligibleParticipants(eligiblePlayers);
+        return game.getEligibleParticipants();
     }
 
     public ArrayList<Player> getAndDisplayEligibleParticipants(PrintWriter output, int sponsorIndex) {
