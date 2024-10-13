@@ -56,6 +56,15 @@ public class Controller {
             view.displayCurrentStage(output, game.getQuest().get(currentStageIndex));
         }
 
+        output.println();
+        output.print("Cards for Stage " + (game.getCurrentStageIndex() + 1) + ": ");
+        for(AdventureCard card : game.getQuest().get(game.getCurrentStageIndex())) {
+            output.print(card + " ");
+            sponsor.getHand().remove(card);
+        }
+        output.println();
+        output.flush();
+
     }
 
     public int getSponsor(PrintWriter output, Scanner input) {
