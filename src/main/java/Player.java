@@ -17,6 +17,8 @@ public class Player {
         this.shields = 0;
     }
 
+    public void setEligibility(boolean eligibility) {  }
+
     public int getIndex() { return id; }
 
     public int addCardToHand(AdventureCard card) {

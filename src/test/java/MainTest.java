@@ -1839,4 +1839,104 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The sponsor is p1 and every other player is eligible")
+    void RESP_30_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        ArrayList<Player> eligibleParticipants = controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        String result = output.toString();
+
+        assertFalse(eligibleParticipants.contains(game.getPlayer(0)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(1)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(2)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(3)));
+
+        assertTrue(result.contains(game.getPlayer(1).toString()));
+        assertTrue(result.contains(game.getPlayer(2).toString()));
+        assertTrue(result.contains(game.getPlayer(3).toString()));
+    }
+
+    @Test
+    @DisplayName("The sponsor is p1 and player 2 is ineligible")
+    void RESP_30_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        game.getPlayer(1).setEligibility(false);
+
+        ArrayList<Player> eligibleParticipants = controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        String result = output.toString();
+
+        assertFalse(eligibleParticipants.contains(game.getPlayer(0)));
+        assertFalse(eligibleParticipants.contains(game.getPlayer(1)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(2)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(3)));
+
+        assertTrue(result.contains(game.getPlayer(2).toString()));
+        assertTrue(result.contains(game.getPlayer(3).toString()));
+
+    }
+
+    @Test
+    @DisplayName("The sponsor is p1 and player 2 and 4 are ineligible")
+    void RESP_30_Test_03() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        game.getPlayer(1).setEligibility(false);
+        game.getPlayer(3).setEligibility(false);
+
+        ArrayList<Player> eligibleParticipants = controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        String result = output.toString();
+
+        assertFalse(eligibleParticipants.contains(game.getPlayer(0)));
+        assertFalse(eligibleParticipants.contains(game.getPlayer(1)));
+        assertTrue(eligibleParticipants.contains(game.getPlayer(2)));
+        assertFalse(eligibleParticipants.contains(game.getPlayer(3)));
+
+        assertTrue(result.contains(game.getPlayer(2).toString()));
+
+    }
+
 }

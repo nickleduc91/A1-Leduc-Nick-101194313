@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public ArrayList<Player> getAndDisplayEligibleParticipants(PrintWriter output, int sponsorIndex) {
+        return new ArrayList<>();
+    }
+
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {
 
         for(int i = 0; i < stages; i++) {
