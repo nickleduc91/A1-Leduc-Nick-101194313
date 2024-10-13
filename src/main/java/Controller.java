@@ -19,7 +19,10 @@ public class Controller {
     }
 
     public void handleParticipation(PrintWriter output, Scanner input) {
-
+        for(Player p : game.getEligibleParticipants()) {
+            int trim = p.addCardToHand(game.drawAdventureCard());
+            view.trimCard(output, input, p, game.getAdventureDeck(), trim);
+        }
     }
 
     public ArrayList<Player> getPromptedEligiblePlayers(PrintWriter output, Scanner input) {
