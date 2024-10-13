@@ -1359,7 +1359,7 @@ class MainTest {
 
         String input2 = "q\n0\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(result.contains("Error: A stage cannot be empty"));
@@ -1461,7 +1461,7 @@ class MainTest {
         // the sponsor then chooses a valid selection and quits again
         String input2 = "0\nq\n1\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(result.contains("Error: Insufficient value for this stage"));
@@ -1557,7 +1557,7 @@ class MainTest {
         // Make sure the sponsor then picks a foe so they can quit
         String input2 = sponsor.getHandSize() - 1 + "\nq\n0\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(result.contains("Invalid selection: You must choose a foe card first"));
@@ -1582,7 +1582,7 @@ class MainTest {
         // Make the input a foe card, and then the last 2 cards in the hand since they are set to the same type of card
         String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\n" + (sponsor.getHandSize() - 2) + "\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(result.contains("Invalid selection: You cannot have duplicate weapons in a stage"));
@@ -1607,7 +1607,7 @@ class MainTest {
         // Make the input the first 2 cards since they were set to F5 foe cards
         String input2 = "0\n1\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(result.contains("Invalid selection: You cannot choose 2 foe cards in a stage"));
@@ -1634,7 +1634,7 @@ class MainTest {
         // Make the input the first card and last card (F25 D5) and then quit
         String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
@@ -1666,7 +1666,7 @@ class MainTest {
         // Make the input the first card and last card (F25 D5) and then quit
         String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\n" + (sponsor.getHandSize() - 2) + "\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
@@ -1696,7 +1696,7 @@ class MainTest {
         // Make the input the first card and last card (F25 D5) and then quit
         String input2 = "0\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
         String result = output.toString();
 
         assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
@@ -1727,7 +1727,7 @@ class MainTest {
         // Make the input the first card and last card (F25 D5, and B15) and then quit
         String input2 = "0\n" + (sponsor.getHandSize() - 1) + "\n" + (sponsor.getHandSize() - 2) + "\nq\n";
 
-        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 4);
+        controller.setupQuest(new PrintWriter(output), new Scanner(input2), game.getPlayer(sponsorIndex), 1);
 
         String result = output.toString();
         assertTrue(game.getQuest().get(game.getCurrentStageIndex()).contains(card1));
@@ -1743,7 +1743,7 @@ class MainTest {
 
     @Test
     @DisplayName("The sponsor creates a valid quest that has 2 stages, first stage: F25, second stage: F5, E30")
-    void RESP_28Test_01() {
+    void RESP_28_Test_01() {
         Game game = new Game();
         Controller controller = new Controller(game);
         StringWriter output = new StringWriter();
