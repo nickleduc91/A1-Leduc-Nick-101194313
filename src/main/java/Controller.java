@@ -53,6 +53,7 @@ public class Controller {
                 continue;
             }
             game.getQuest().get(currentStageIndex).add(card);
+            view.displayCurrentStage(output, game.getQuest().get(currentStageIndex));
         }
 
     }

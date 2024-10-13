@@ -57,6 +57,15 @@ public class View {
 
     }
 
+    public void displayCurrentStage(PrintWriter output, ArrayList<AdventureCard> stage) {
+        output.print("Current Stage: ");
+        for(AdventureCard card : stage) {
+            output.print(card + " ");
+        }
+        output.println();
+        output.flush();
+    }
+
     public void displayEventCard(PrintWriter output, EventCard card) {
         output.println("Drawn Card: " + card.toString());
         output.flush();
