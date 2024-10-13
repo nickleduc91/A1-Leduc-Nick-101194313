@@ -18,17 +18,16 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public ArrayList<Player> getPromptedEligiblePlayers(PrintWriter output, Scanner input) {
+        return new ArrayList<>();
+    }
+
     public ArrayList<Player> getAndDisplayEligibleParticipants(PrintWriter output, int sponsorIndex) {
-        ArrayList<Player> eligiblePlayers = new ArrayList<>();
 
-        for(int i = 0; i < 4; i++) {
-            Player p = game.getPlayer(i);
-            if(p.getIndex() == sponsorIndex || !p.getEligibility()) continue;
-            eligiblePlayers.add(p);
-        }
+        game.getEligibleParticipants().removeIf(p -> p.getIndex() == sponsorIndex || !p.getEligibility());
 
-        view.displayEligibleParticipants(output, eligiblePlayers);
-        return eligiblePlayers;
+        view.displayEligibleParticipants(output, game.getEligibleParticipants());
+        return game.getEligibleParticipants();
     }
 
     public void setupQuest(PrintWriter output, Scanner input, Player sponsor, int stages) {

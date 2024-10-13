@@ -1939,4 +1939,66 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The sponsor is p1 and every other player is eligible, and every other player accepts to participate")
+    void RESP_31_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        String input = "yes\nyes\nyes";
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        assertFalse(game.getEligibleParticipants().contains(game.getPlayer(0)));
+        assertTrue(game.getEligibleParticipants().contains(game.getPlayer(1)));
+        assertTrue(game.getEligibleParticipants().contains(game.getPlayer(2)));
+        assertTrue(game.getEligibleParticipants().contains(game.getPlayer(3)));
+
+    }
+
+    @Test
+    @DisplayName("The sponsor is p1 and every other player is eligible, and only players 2 and 4 accept to participate")
+    void RESP_31_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F5));
+        stage2.add(new AdventureCard(CardType.EXCALIBUR));
+        stage2.add(new AdventureCard(CardType.SWORD));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        String input = "yes\nno\nyes";
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        assertFalse(game.getEligibleParticipants().contains(game.getPlayer(0)));
+        assertTrue(game.getEligibleParticipants().contains(game.getPlayer(1)));
+        assertFalse(game.getEligibleParticipants().contains(game.getPlayer(2)));
+        assertTrue(game.getEligibleParticipants().contains(game.getPlayer(3)));
+
+    }
+
 }
