@@ -17,12 +17,17 @@ public class View {
     }
 
     public void displayEligibleParticipants(PrintWriter output, ArrayList<Player> players) {
-        output.println("Eligible participants: ");
-        for(Player p : players) {
-            output.println(p.toString());
+        if(players.isEmpty()) {
+            output.println("There are NO eligible participants for the quest");
+            output.flush();
+        } else {
+            output.println("Eligible participants: ");
+            for(Player p : players) {
+                output.println(p.toString());
+            }
+            output.println();
+            output.flush();
         }
-        output.println();
-        output.flush();
     }
 
     public void identifyStages(PrintWriter output, ArrayList<ArrayList<AdventureCard>> quest) {

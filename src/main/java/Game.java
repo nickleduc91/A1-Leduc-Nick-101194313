@@ -28,7 +28,7 @@ public class Game {
     }
 
     public boolean isQuestDone() {
-        return false;
+        return getEligibleParticipants().isEmpty();
     }
 
     public void setEligibleParticipants(ArrayList<Player> eligiblePlayers) {
