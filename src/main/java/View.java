@@ -8,7 +8,14 @@ import java.util.*;
 public class View {
 
     public void identifyStages(PrintWriter output, ArrayList<ArrayList<AdventureCard>> quest) {
-
+        for(int i = 0; i < quest.size(); i++) {
+            output.print("Stage " + (i + 1) + ": ");
+            for(AdventureCard _ : quest.get(i)) {
+                output.print("X");
+            }
+            output.println();
+        }
+        output.flush();
     }
 
     int getQuestPosition(PrintWriter output, Scanner input) {
