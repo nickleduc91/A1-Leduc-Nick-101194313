@@ -2170,4 +2170,52 @@ class MainTest {
         assertTrue(result.contains("Invalid selection: You cannot select a foe in an attack"));
     }
 
+    @Test
+    @DisplayName("Only P2 is eligible, and selects a valid attack (Horse)")
+    void RESP_37_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nno\nno";
+        String input2 = "0\nq\n";
+
+        // Set Excalibur in position 0 and 1 in P2's hand
+        AdventureCard card = new AdventureCard(CardType.HORSE);
+        game.getPlayer(1).getHand().set(0, card);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+        assertFalse(isQuestDone);
+
+        controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(1, game.getPlayer(1).getAttack().size());
+        assertTrue(game.getPlayer(1).getAttack().contains(card));
+        assertTrue(result.contains("Attack for " + game.getPlayer(1) + ": H10"));
+        assertFalse(game.getPlayer(1).getHand().contains(card));
+    }
+
+    @Test
+    @DisplayName("Only P2 is eligible, and selects no cards for an attack")
+    void RESP_37_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nno\nno";
+        String input2 = "q\n";
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+        assertFalse(isQuestDone);
+
+        controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(0, game.getPlayer(1).getAttack().size());
+        assertTrue(result.contains("Attack for " + game.getPlayer(1) + ": No cards were selected"));
+    }
+
 }
