@@ -7,6 +7,18 @@ import java.util.*;
 
 public class View {
 
+    int getAttackPosition(PrintWriter output, Scanner input, Player p) {
+        output.println(p + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack");
+        output.flush();
+
+        String inputStr = input.nextLine();
+        if(inputStr.equals("q")) {
+            return -1;
+        }
+
+        return Integer.parseInt(inputStr);
+    }
+
     public boolean getParticipantAnswer(PrintWriter output, Scanner input, Player p) {
         output.println(p.toString() + ", would you like to participate in this stage? (yes/no)");
         output.flush();

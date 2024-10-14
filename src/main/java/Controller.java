@@ -19,6 +19,10 @@ public class Controller {
     }
 
     public void voidSetupAttacks(PrintWriter output, Scanner input) {
+        for(Player p : game.getEligibleParticipants()) {
+            view.displayCurrentPlayerHand(output, p);
+            int position = view.getAttackPosition(output, input, p);
+        }
 
     }
 
