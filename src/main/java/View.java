@@ -7,7 +7,7 @@ import java.util.*;
 
 public class View {
 
-    int getAttackPosition(PrintWriter output, Scanner input, Player p) {
+    public int getAttackPosition(PrintWriter output, Scanner input, Player p) {
         output.println(p + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack");
         output.flush();
 

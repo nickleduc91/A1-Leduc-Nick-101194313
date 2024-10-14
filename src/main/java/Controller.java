@@ -21,7 +21,15 @@ public class Controller {
     public void voidSetupAttacks(PrintWriter output, Scanner input) {
         for(Player p : game.getEligibleParticipants()) {
             view.displayCurrentPlayerHand(output, p);
-            int position = view.getAttackPosition(output, input, p);
+
+            while (true) {
+                int position = view.getAttackPosition(output, input, p);
+
+                if(position == -1) {
+                    break;
+                }
+            }
+
         }
 
     }
