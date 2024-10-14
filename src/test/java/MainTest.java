@@ -2116,16 +2116,17 @@ class MainTest {
     }
 
     @Test
-    @DisplayName("Only P2 is eligible, and selects an Excalibur and Dagger which are added to their attack and displayed")
-    void RESP_35_Test_02() {
+    @DisplayName("Only P2 is eligible, and selects an Excalibur twice, thus is re-prompted to pick again and quits")
+    void RESP_36_Test_01() {
         Game game = new Game();
         Controller controller = new Controller(game);
         StringWriter output = new StringWriter();
         String input = "yes\nno\nno";
         String input2 = "0\n1\nq\n";
 
+        // Set Excalibur in position 0 and 1 in P2's hand
         AdventureCard card = new AdventureCard(CardType.EXCALIBUR);
-        AdventureCard card2 = new AdventureCard(CardType.DAGGER);
+        AdventureCard card2 = new AdventureCard(CardType.EXCALIBUR);
         game.getPlayer(1).getHand().set(0, card);
         game.getPlayer(1).getHand().set(1, card2);
 
@@ -2137,10 +2138,10 @@ class MainTest {
         controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
         String result = output.toString();
 
-        assertEquals(2, game.getPlayer(1).getAttack().size());
+        assertEquals(1, game.getPlayer(1).getAttack().size());
         assertTrue(game.getPlayer(1).getAttack().contains(card));
-        assertTrue(game.getPlayer(1).getAttack().contains(card2));
-        assertTrue(result.contains(game.getPlayer(1).toString() + ", Current Attack: E30 D5"));
+        assertFalse(game.getPlayer(1).getAttack().contains(card2));
+        assertTrue(result.contains("Invalid selection: You cannot have duplicate weapons in an attack"));
     }
 
 }
