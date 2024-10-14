@@ -2470,5 +2470,75 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The Q2 finishes and all cards are discarded and the sponsor (P1) draws the same number of cards(4) + number of stages(2)")
+    void RESP_42_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        EventCard qCard = new EventCard(CardType.Q2);
+        Player sponsor = game.getPlayer(0);
+
+        // Discard 6 cards so we don't need to trim
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+
+        int originalDiscardCount = game.getAdventureDeck().getDiscardPileSize();
+
+        controller.endQuest(new PrintWriter(output), new Scanner(input), 0, qCard);
+
+        assertEquals(originalDiscardCount + 4, game.getAdventureDeck().getDiscardPileSize());
+        assertEquals(12, sponsor.getHandSize());
+
+    }
+
+    @Test
+    @DisplayName("The Q2 finishes and all cards are discarded and the sponsor (P1) draws the same number of cards(4) + number of stages(2), and a trim occurs")
+    void RESP_42_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "0\n0\n0\n0\n0\n0\n";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        EventCard qCard = new EventCard(CardType.Q2);
+        Player sponsor = game.getPlayer(0);
+
+        int originalDiscardCount = game.getAdventureDeck().getDiscardPileSize();
+
+        controller.endQuest(new PrintWriter(output), new Scanner(input), 0, qCard);
+
+        // Ensure the discard pile contains all 6 trimmed card and all 4 cards used in the quest
+        assertEquals((originalDiscardCount + 4) + 6, game.getAdventureDeck().getDiscardPileSize());
+        assertEquals(12, sponsor.getHandSize());
+        assertTrue(game.getEventDeck().getDiscardPile().contains(qCard));
+
+    }
+
 
 }

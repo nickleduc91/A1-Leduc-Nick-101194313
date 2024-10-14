@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public void endQuest(PrintWriter output, Scanner input, int sponsorIndex, EventCard qCard) {
+
+    }
+
     public boolean endResolution(PrintWriter output, int stageIndex) {
         // Discard all cards used to attack
         for(Player p : game.getEligibleParticipants()) {
