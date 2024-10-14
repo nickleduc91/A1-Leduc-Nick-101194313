@@ -19,6 +19,20 @@ public class Controller {
     }
 
     public boolean endResolution(PrintWriter output, int stageIndex) {
+        game.getEligibleParticipants().removeIf(p -> !p.getEligibility());
+        if(game.getEligibleParticipants().isEmpty()) {
+            view.displayMessage(output, "The quest is now finished since nobody is eligible to continue");
+            return true;
+        }
+        // Last stage just happened and there are still participants who are eligible
+        if(stageIndex == game.getQuest().size() - 1) {
+            view.displayMessage(output, "Winner(s) of the quest:");
+            for(Player p : game.getEligibleParticipants()) {
+                view.displayMessage(output, p.toString());
+                p.addShields(stageIndex + 1);
+            }
+            return true;
+        }
         return false;
     }
 
