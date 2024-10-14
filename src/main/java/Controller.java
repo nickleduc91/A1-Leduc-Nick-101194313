@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public boolean endResolution(PrintWriter output, int stageIndex) {
+        return false;
+    }
+
     public void resolveAttacks(PrintWriter output, int stageIndex) {
         int stageAttackValue = game.getAttackValue(stageIndex);
 

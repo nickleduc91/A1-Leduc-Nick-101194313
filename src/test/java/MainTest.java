@@ -2332,4 +2332,97 @@ class MainTest {
         assertTrue(result.contains(game.getPlayer(2).toString() + " is now ineligible since their attack value is less than the stage value"));
     }
 
+    @Test
+    @DisplayName("P2 and P3 are eligible and is the last stage of Q2, and both of their attacks are greater than the value of the current stage thus both win and gain shields")
+    void RESP_40_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nyes\nno";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F25));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        // Add a Battle Axe and a Horse to P2's attack hand
+        AdventureCard p2Card1 = new AdventureCard(CardType.BATTLE_AXE);
+        AdventureCard p2Card2 = new AdventureCard(CardType.EXCALIBUR);
+        game.getPlayer(1).getAttack().add(p2Card1);
+        game.getPlayer(1).getAttack().add(p2Card2);
+
+        // Add a dagger and a sword to P3's attack hand
+        AdventureCard p3Card1 = new AdventureCard(CardType.DAGGER);
+        AdventureCard p3Card2 = new AdventureCard(CardType.SWORD);
+        AdventureCard p3Card3 = new AdventureCard(CardType.HORSE);
+        game.getPlayer(2).getAttack().add(p3Card1);
+        game.getPlayer(2).getAttack().add(p3Card2);
+        game.getPlayer(2).getAttack().add(p3Card3);
+
+        int p2OriginalShieldCount = game.getPlayer(1).getShields();
+        int p3OriginalShieldCount = game.getPlayer(2).getShields();
+
+        controller.resolveAttacks(new PrintWriter(output), 1);
+        boolean isDone = controller.endResolution(new PrintWriter(output), 1);
+        String result = output.toString();
+
+        assertTrue(isDone);
+        assertEquals(p2OriginalShieldCount + 2, game.getPlayer(1).getShields());
+        assertEquals(p3OriginalShieldCount + 2, game.getPlayer(2).getShields());
+        assertTrue(result.contains("Winner(s) of the quest:"));
+    }
+
+    @Test
+    @DisplayName("P2 and P3 are eligible and is not the last stage of Q2, and both of their attacks are smaller than the value of the current stage thus the quest ends")
+    void RESP_40_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nyes\nno";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        // Add a Battle Axe and a Horse to P2's attack hand
+        AdventureCard p2Card1 = new AdventureCard(CardType.BATTLE_AXE);
+        AdventureCard p2Card2 = new AdventureCard(CardType.EXCALIBUR);
+        game.getPlayer(1).getAttack().add(p2Card1);
+        game.getPlayer(1).getAttack().add(p2Card2);
+
+        // Add a dagger and a sword to P3's attack hand
+        AdventureCard p3Card1 = new AdventureCard(CardType.DAGGER);
+        AdventureCard p3Card2 = new AdventureCard(CardType.SWORD);
+        AdventureCard p3Card3 = new AdventureCard(CardType.HORSE);
+        game.getPlayer(2).getAttack().add(p3Card1);
+        game.getPlayer(2).getAttack().add(p3Card2);
+        game.getPlayer(2).getAttack().add(p3Card3);
+
+        controller.resolveAttacks(new PrintWriter(output), 1);
+        boolean isDone = controller.endResolution(new PrintWriter(output), 1);
+        String result = output.toString();
+
+        assertTrue(isDone);
+        assertTrue(game.getEligibleParticipants().isEmpty());
+        assertTrue(result.contains("The quest is now finished since nobody is eligible to continue"));
+
+    }
+
 }
