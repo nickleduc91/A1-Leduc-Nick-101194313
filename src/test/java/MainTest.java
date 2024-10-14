@@ -2424,5 +2424,51 @@ class MainTest {
         assertTrue(result.contains("The quest is now finished since nobody is eligible to continue"));
 
     }
+    @Test
+    @DisplayName("P2 and P3 are only eligible players, the game resolves their attacks and then discards each attack card that was used")
+    void RESP_41_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nyes\nno";
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        // Add a Battle Axe and a Horse to P2's attack hand
+        AdventureCard p2Card1 = new AdventureCard(CardType.BATTLE_AXE);
+        AdventureCard p2Card2 = new AdventureCard(CardType.EXCALIBUR);
+        game.getPlayer(1).getAttack().add(p2Card1);
+        game.getPlayer(1).getAttack().add(p2Card2);
+
+        // Add a dagger and a sword to P3's attack hand
+        AdventureCard p3Card1 = new AdventureCard(CardType.DAGGER);
+        AdventureCard p3Card2 = new AdventureCard(CardType.SWORD);
+        AdventureCard p3Card3 = new AdventureCard(CardType.HORSE);
+        game.getPlayer(2).getAttack().add(p3Card1);
+        game.getPlayer(2).getAttack().add(p3Card2);
+        game.getPlayer(2).getAttack().add(p3Card3);
+
+        int originalDiscardPileCount = game.getAdventureDeck().getDiscardPileSize();
+
+        controller.resolveAttacks(new PrintWriter(output), 1);
+        controller.endResolution(new PrintWriter(output), 1);
+
+        assertTrue(game.getPlayer(1).getAttack().isEmpty());
+        assertTrue(game.getPlayer(1).getAttack().isEmpty());
+        assertEquals(originalDiscardPileCount + 5, game.getAdventureDeck().getDiscardPileSize());
+
+    }
+
 
 }
