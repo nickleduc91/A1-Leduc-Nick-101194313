@@ -56,6 +56,20 @@ public class Controller {
                 view.displayPlayerAttack(output, p);
             }
 
+            output.println();
+            if(p.getAttack().isEmpty()) {
+                output.print("Attack for " + p + ": No cards were selected");
+            } else {
+                output.print("Attack for " + p + ": ");
+                for(AdventureCard card : p.getAttack()) {
+                    output.print(card + " ");
+                    p.getHand().remove(card);
+                }
+            }
+
+            output.println();
+            output.flush();
+
         }
 
     }
