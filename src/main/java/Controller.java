@@ -19,6 +19,18 @@ public class Controller {
     }
 
     public boolean endResolution(PrintWriter output, int stageIndex) {
+        // Discard all cards used to attack
+        for(Player p : game.getEligibleParticipants()) {
+            ArrayList<AdventureCard> attackHand = p.getAttack();
+            ArrayList<AdventureCard> cardsToDiscard = new ArrayList<>(attackHand);
+
+            // Remove each card from the player's attack hand and add it to the discard pile
+            for(AdventureCard card : cardsToDiscard) {
+                game.getAdventureDeck().addToDiscardPile(card);
+            }
+            attackHand.clear();
+        }
+
         game.getEligibleParticipants().removeIf(p -> !p.getEligibility());
         if(game.getEligibleParticipants().isEmpty()) {
             view.displayMessage(output, "The quest is now finished since nobody is eligible to continue");
