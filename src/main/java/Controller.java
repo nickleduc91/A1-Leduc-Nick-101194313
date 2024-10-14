@@ -43,6 +43,8 @@ public class Controller {
             if(attackValue < stageAttackValue) {
                 p.setEligibility(false);
                 view.displayMessage(output, p.toString() + " is now ineligible since their attack value is less than the stage value");
+            } else {
+                view.displayMessage(output, p + " is eligible to continue");
             }
             output.println();
         }
