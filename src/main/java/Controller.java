@@ -30,6 +30,21 @@ public class Controller {
                 }
 
                 AdventureCard card = p.getHand().get(position);
+                // Check for duplicates
+                if(!p.getAttack().isEmpty()) {
+                    boolean duplicate = false;
+                    for (AdventureCard attackCard : p.getAttack()) {
+                        if (attackCard.getType().getName().equals(card.getType().getName())) {
+                            duplicate = true;
+                            break;
+                        }
+                    }
+                    if(duplicate) {
+                        view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in an attack");
+                        continue;
+                    }
+                }
+
                 p.getAttack().add(card);
                 view.displayPlayerAttack(output, p);
             }
