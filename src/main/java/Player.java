@@ -11,15 +11,17 @@ public class Player {
     private List<AdventureCard> hand;
     private int shields;
     private boolean isEligible;
+    private ArrayList<AdventureCard> attack;
 
     public Player(int id) {
         this.id = id;
         this.hand = new ArrayList<>();
         this.shields = 0;
         this.isEligible = true;
+        this.attack = new ArrayList<>();
     }
 
-    public ArrayList<AdventureCard> getAttack() { return new ArrayList<>(); }
+    public ArrayList<AdventureCard> getAttack() { return attack; }
 
     public void setEligibility(boolean eligibility) { isEligible = eligibility; }
 

@@ -7,6 +7,15 @@ import java.util.*;
 
 public class View {
 
+    public void displayPlayerAttack(PrintWriter output, Player p) {
+        output.print(p + ", Current Attack: ");
+        for(AdventureCard card : p.getAttack()) {
+            output.print(card + " ");
+        }
+        output.println();
+        output.flush();
+    }
+
     public int getAttackPosition(PrintWriter output, Scanner input, Player p) {
         output.println(p + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack");
         output.flush();

@@ -28,6 +28,10 @@ public class Controller {
                 if(position == -1) {
                     break;
                 }
+
+                AdventureCard card = p.getHand().get(position);
+                p.getAttack().add(card);
+                view.displayPlayerAttack(output, p);
             }
 
         }
