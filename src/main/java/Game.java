@@ -27,6 +27,23 @@ public class Game {
         this.eligibleParticipants = new ArrayList<>();
     }
 
+    public int getAttackValue(int stageIndex) {
+        int value = 0;
+        ArrayList<AdventureCard> stage = quest.get(stageIndex);
+        for(AdventureCard card : stage) {
+            value += card.getValue();
+        }
+        return value;
+    }
+
+    public int getAttackValue(Player p) {
+        int value = 0;
+        for(AdventureCard card : p.getAttack()) {
+            value += card.getValue();
+        }
+        return value;
+    }
+
     public boolean isQuestDone() {
         return getEligibleParticipants().isEmpty();
     }

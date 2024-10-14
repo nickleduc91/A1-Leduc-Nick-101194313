@@ -19,7 +19,33 @@ public class Controller {
     }
 
     public void resolveAttacks(PrintWriter output, int stageIndex) {
+        int stageAttackValue = game.getAttackValue(stageIndex);
 
+        output.println("-- Resolving attacks --");
+        // Display the Stage's attack
+        output.print("Attack for Stage" + (stageIndex + 1) + ": ");
+        for(AdventureCard card : game.getQuest().get(stageIndex)) {
+            output.print(card + " ");
+        }
+        output.println();
+        output.println();
+
+        for(Player p : game.getEligibleParticipants()) {
+            int attackValue = game.getAttackValue(p);
+
+            // Display the players attack
+            output.print("Attack for " + p + ": ");
+            for(AdventureCard card : p.getAttack()) {
+                output.print(card + " ");
+            }
+            output.println();
+
+            if(attackValue < stageAttackValue) {
+                p.setEligibility(false);
+                view.displayMessage(output, p.toString() + " is now ineligible since their attack value is less than the stage value");
+            }
+            output.println();
+        }
     }
 
     public void voidSetupAttacks(PrintWriter output, Scanner input) {
