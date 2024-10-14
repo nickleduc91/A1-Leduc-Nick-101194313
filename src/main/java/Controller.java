@@ -20,6 +20,35 @@ public class Controller {
 
     public void endQuest(PrintWriter output, Scanner input, int sponsorIndex, EventCard qCard) {
 
+        int cardCount = 0;
+        int numStages = game.getQuest().size();
+
+        // Remove all cards from the quest and discard them
+        for (ArrayList<AdventureCard> stage : game.getQuest()) {
+            ArrayList<AdventureCard> cardsToDiscard = new ArrayList<>(stage);
+
+            // Add each card to the discard pile
+            for (AdventureCard card : cardsToDiscard) {
+                cardCount += 1;
+                game.getAdventureDeck().addToDiscardPile(card);
+            }
+
+            stage.clear();
+        }
+
+        // Draw cards and trim if needed
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        view.displayMessage(output, "The sponsor must draw " + (cardCount + numStages) + " adventure cards");
+
+        for(int i = 0; i < (cardCount + numStages); i++) {
+            int trim = sponsor.addCardToHand(game.drawAdventureCard());
+            view.trimCard(output, input, sponsor, game.getAdventureDeck(), trim);
+        }
+
+        // Discard the q card
+        game.getEventDeck().addToDiscardPile(qCard);
+
     }
 
     public boolean endResolution(PrintWriter output, int stageIndex) {
