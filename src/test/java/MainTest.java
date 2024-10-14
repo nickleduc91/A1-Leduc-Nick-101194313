@@ -6,7 +6,6 @@ import Enums.CardType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.smartcardio.Card;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;

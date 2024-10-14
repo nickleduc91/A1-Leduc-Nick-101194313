@@ -80,7 +80,7 @@ public class View {
     }
 
     public boolean getSponsor(PrintWriter output, Scanner input, int index) {
-        output.println("Would you like to sponsor the quest? (yes/no)");
+        output.println("Player ID: P" + (index + 1) + ", Would you like to sponsor the quest? (yes/no)");
         output.flush();
 
         String response = input.nextLine();
@@ -166,13 +166,14 @@ public class View {
         }
 
         output.print("Foes: ");
-        for (AdventureCard card : foes) {
-            output.print(card + " ");
+        for(int i = 0; i < foes.size(); i++) {
+            output.print(i + "(" + foes.get(i) + ") ");
         }
+        int start = foes.size();
         output.println();
         output.print("Weapons: ");
-        for (AdventureCard card : weapons) {
-            output.print(card + " ");
+        for(int i = 0; i < weapons.size(); i++) {
+            output.print((start + i) + "(" + weapons.get(i) + ") ");
         }
         output.println();
         output.println();

@@ -111,7 +111,7 @@ public class Game {
             precedingValue += card.getValue();
         }
 
-        return (currentValue < precedingValue);
+        return (currentValue <= precedingValue);
 
     }
 

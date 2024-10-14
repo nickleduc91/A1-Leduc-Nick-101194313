@@ -84,6 +84,7 @@ public class Controller {
         // Last stage just happened and there are still participants who are eligible
         if(stageIndex == game.getQuest().size() - 1) {
             view.displayMessage(output, "Winner(s) of the quest:");
+            view.displayMessage(output, "Each have gained " + (stageIndex + 1) + " shields.");
             for(Player p : game.getEligibleParticipants()) {
                 view.displayMessage(output, p.toString());
                 p.addShields(stageIndex + 1);
@@ -282,6 +283,49 @@ public class Controller {
             }
         }
 
+    }
+
+    public boolean playTurn(PrintWriter output, Scanner input) {
+
+        EventCard drawnCard = game.drawEventCard();
+        view.displayEventCard(output, drawnCard);
+
+        if(drawnCard.getType().isEvent()) {
+            handleDrawnECard(drawnCard, output, input);
+        } else {
+
+            int sponsorIndex = getSponsor(output, input);
+            if(sponsorIndex == -1) {
+                game.getEventDeck().addToDiscardPile(drawnCard);
+            } else {
+                Player sponsor = game.getPlayer(sponsorIndex);
+                setupQuest(output, input, sponsor, drawnCard.getType().getValue());
+
+                for(int i = 0; i < game.getQuest().size(); i++) {
+                    getAndDisplayEligibleParticipants(output, sponsorIndex);
+                    view.identifyStages(output, game.getQuest());
+                    getPromptedEligiblePlayers(output, input);
+                    handleParticipation(output, input);
+                    view.identifyStages(output, game.getQuest());
+                    voidSetupAttacks(output, input);
+                    resolveAttacks(output, i);
+                    boolean isDone = endResolution(output, i);
+                    if(isDone) break;
+                }
+                endQuest(output, input, sponsorIndex, drawnCard);
+            }
+
+        }
+
+        if (game.hasWinner()) {
+            view.displayWinners(output, game.getWinners());
+            return true;
+        }
+
+        view.endTurn(output, input, game.getCurrentPlayer());
+
+        game.updateNextPlayer();
+        return false;
     }
 
     public boolean playTurn() {
