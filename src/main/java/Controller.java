@@ -49,6 +49,18 @@ public class Controller {
         // Discard the q card
         game.getEventDeck().addToDiscardPile(qCard);
 
+        // Reset all quest related variables
+        game.getQuest().clear();
+        game.getEligibleParticipants().clear();
+        game.setCurrentStageIndex(0);
+
+        for(int i = 0; i < 4; i++) {
+            Player p = game.getPlayer(i);
+            p.setEligibility(true);
+
+            game.getEligibleParticipants().add(p);
+        }
+
     }
 
     public boolean endResolution(PrintWriter output, int stageIndex) {
