@@ -2067,4 +2067,28 @@ class MainTest {
         assertTrue(isQuestDone);
     }
 
+    @Test
+    @DisplayName("All players are eligible, and they are prompted to choose a position of a card")
+    void RESP_34_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nyes\nyes";
+        String input2 = "0\n0\n0";
+
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+        assertFalse(isQuestDone);
+
+        controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+        System.out.println(result);
+        assertTrue(result.contains(game.getPlayer(1).toString() + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack"));
+        assertTrue(result.contains(game.getPlayer(2).toString() + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack"));
+        assertTrue(result.contains(game.getPlayer(3).toString() + ", enter the index of the card in your hand you would like to add to the attack, or type 'q' to quit building this attack"));
+
+    }
+
 }

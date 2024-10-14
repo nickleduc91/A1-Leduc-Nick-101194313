@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public void voidSetupAttacks(PrintWriter output, Scanner input) {
+
+    }
+
     public void handleParticipation(PrintWriter output, Scanner input) {
         for(Player p : game.getEligibleParticipants()) {
             int trim = p.addCardToHand(game.drawAdventureCard());
