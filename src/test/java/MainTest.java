@@ -2144,4 +2144,30 @@ class MainTest {
         assertTrue(result.contains("Invalid selection: You cannot have duplicate weapons in an attack"));
     }
 
+    @Test
+    @DisplayName("Only P2 is eligible, and selects a Foe, thus is re-prompted to pick again and quits")
+    void RESP_36_Test_02() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nno\nno";
+        String input2 = "0\n1\nq\n";
+
+        // Set Excalibur in position 0 and 1 in P2's hand
+        AdventureCard card = new AdventureCard(CardType.EXCALIBUR);
+        game.getPlayer(1).getHand().set(1, card);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+        assertFalse(isQuestDone);
+
+        controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(1, game.getPlayer(1).getAttack().size());
+        assertTrue(game.getPlayer(1).getAttack().contains(card));
+        assertTrue(result.contains("Invalid selection: You cannot select a foe in an attack"));
+    }
+
 }
