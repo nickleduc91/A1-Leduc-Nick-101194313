@@ -2540,5 +2540,47 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("The Q2 finishes and all quest related variables should be reset to their initial values")
+    void RESP_43_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        ArrayList<AdventureCard> stage2 = new ArrayList<>();
+        stage2.add(new AdventureCard(CardType.F70));
+        game.getQuest().add(stage1);
+        game.getQuest().add(stage2);
+
+        EventCard qCard = new EventCard(CardType.Q2);
+        Player sponsor = game.getPlayer(0);
+
+        // Discard 6 cards so we don't need to trim
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+        sponsor.discard(0, game.getAdventureDeck());
+
+        controller.endQuest(new PrintWriter(output), new Scanner(input), 0, qCard);
+
+        assertTrue(game.getQuest().isEmpty());
+        assertEquals(0, game.getCurrentStageIndex());
+
+        for(int i = 0; i < 4; i ++) {
+            Player p = game.getPlayer(i);
+            assertTrue(game.getEligibleParticipants().contains(game.getPlayer(i)));
+            assertTrue(p.getEligibility());
+        }
+
+    }
+
 
 }
