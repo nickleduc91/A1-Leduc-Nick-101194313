@@ -2090,4 +2090,29 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("Only P2 is eligible, and selects an Excalibur which is added to their attack and displayed")
+    void RESP_35_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nno\nno";
+        String input2 = "0\nq\n";
+
+        AdventureCard card = new AdventureCard(CardType.EXCALIBUR);
+        game.getPlayer(1).getHand().set(0, card);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+        boolean isQuestDone = game.isQuestDone();
+        assertFalse(isQuestDone);
+
+        controller.voidSetupAttacks(new PrintWriter(output), new Scanner(input2));
+        String result = output.toString();
+
+        assertEquals(1, game.getPlayer(1).getAttack().size());
+        assertTrue(game.getPlayer(1).getAttack().contains(card));
+        assertTrue(result.contains(game.getPlayer(1).toString() + ", Current Attack: E30"));
+    }
+
 }

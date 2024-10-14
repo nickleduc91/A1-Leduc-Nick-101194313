@@ -19,6 +19,8 @@ public class Player {
         this.isEligible = true;
     }
 
+    public ArrayList<AdventureCard> getAttack() { return new ArrayList<>(); }
+
     public void setEligibility(boolean eligibility) { isEligible = eligibility; }
 
     public boolean getEligibility() { return isEligible; }
