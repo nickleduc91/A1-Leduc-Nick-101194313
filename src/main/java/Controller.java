@@ -18,6 +18,10 @@ public class Controller {
         game.initializePlayers();
     }
 
+    public void resolveAttacks(PrintWriter output, int stageIndex) {
+
+    }
+
     public void voidSetupAttacks(PrintWriter output, Scanner input) {
         for(Player p : game.getEligibleParticipants()) {
             view.displayCurrentPlayerHand(output, p);

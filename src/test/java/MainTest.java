@@ -6,6 +6,7 @@ import Enums.CardType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import javax.smartcardio.Card;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
@@ -2216,6 +2217,45 @@ class MainTest {
 
         assertEquals(0, game.getPlayer(1).getAttack().size());
         assertTrue(result.contains("Attack for " + game.getPlayer(1) + ": No cards were selected"));
+    }
+
+    @Test
+    @DisplayName("P2 and P3 are eligible, and both of their attacks are less than the value of the current stage")
+    void RESP_38_Test_01() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        String input = "yes\nyes\nno";
+
+        // Set up the stages
+        ArrayList<AdventureCard> stage1 = new ArrayList<>();
+        stage1.add(new AdventureCard(CardType.F25));
+        stage1.add(new AdventureCard(CardType.DAGGER));
+        stage1.add(new AdventureCard(CardType.HORSE));
+        game.getQuest().add(stage1);
+
+        controller.getAndDisplayEligibleParticipants(new PrintWriter(output), 0);
+        controller.getPromptedEligiblePlayers(new PrintWriter(output), new Scanner(input));
+
+        // Add a Battle Axe and a Horse to P2's attack hand
+        AdventureCard p2Card1 = new AdventureCard(CardType.BATTLE_AXE);
+        AdventureCard p2Card2 = new AdventureCard(CardType.HORSE);
+        game.getPlayer(1).getAttack().add(p2Card1);
+        game.getPlayer(1).getAttack().add(p2Card2);
+
+        // Add a dagger and a sword to P3's attack hand
+        AdventureCard p3Card1 = new AdventureCard(CardType.DAGGER);
+        AdventureCard p3Card2 = new AdventureCard(CardType.SWORD);
+        game.getPlayer(2).getAttack().add(p3Card1);
+        game.getPlayer(2).getAttack().add(p3Card2);
+
+        controller.resolveAttacks(new PrintWriter(output), 0);
+        String result = output.toString();
+
+        assertFalse(game.getPlayer(1).getEligibility());
+        assertFalse(game.getPlayer(2).getEligibility());
+        assertTrue(result.contains(game.getPlayer(1).toString() + " is now ineligible since their attack value is less than the stage value"));
+        assertTrue(result.contains(game.getPlayer(2).toString() + " is now ineligible since their attack value is less than the stage value"));
     }
 
 }
