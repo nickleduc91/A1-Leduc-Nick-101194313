@@ -2582,5 +2582,154 @@ class MainTest {
 
     }
 
+    @Test
+    @DisplayName("A-TEST JP-Scenario")
+    void A_TEST_JP_Scenario() {
+        Game game = new Game();
+        Controller controller = new Controller(game);
+        StringWriter output = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(System.out);
+
+        // Rig hands of players
+        Player p1 = game.getPlayer(0);
+        Player p2 = game.getPlayer(1);
+        Player p3 = game.getPlayer(2);
+        Player p4 = game.getPlayer(3);
+
+        p1.getHand().clear();
+        p1.addCardToHand(new AdventureCard(CardType.F5));
+        p1.addCardToHand(new AdventureCard(CardType.F5));
+        p1.addCardToHand(new AdventureCard(CardType.F15));
+        p1.addCardToHand(new AdventureCard(CardType.F15));
+        p1.addCardToHand(new AdventureCard(CardType.DAGGER));
+        p1.addCardToHand(new AdventureCard(CardType.SWORD));
+        p1.addCardToHand(new AdventureCard(CardType.SWORD));
+        p1.addCardToHand(new AdventureCard(CardType.HORSE));
+        p1.addCardToHand(new AdventureCard(CardType.HORSE));
+        p1.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p1.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p1.addCardToHand(new AdventureCard(CardType.LANCE));
+
+        p2.getHand().clear();
+        p2.addCardToHand(new AdventureCard(CardType.F5));
+        p2.addCardToHand(new AdventureCard(CardType.F5));
+        p2.addCardToHand(new AdventureCard(CardType.F15));
+        p2.addCardToHand(new AdventureCard(CardType.F15));
+        p2.addCardToHand(new AdventureCard(CardType.F40));
+        p2.addCardToHand(new AdventureCard(CardType.DAGGER));
+        p2.addCardToHand(new AdventureCard(CardType.SWORD));
+        p2.addCardToHand(new AdventureCard(CardType.HORSE));
+        p2.addCardToHand(new AdventureCard(CardType.HORSE));
+        p2.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p2.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p2.addCardToHand(new AdventureCard(CardType.EXCALIBUR));
+
+        p3.getHand().clear();
+        p3.addCardToHand(new AdventureCard(CardType.F5));
+        p3.addCardToHand(new AdventureCard(CardType.F5));
+        p3.addCardToHand(new AdventureCard(CardType.F5));
+        p3.addCardToHand(new AdventureCard(CardType.F15));
+        p3.addCardToHand(new AdventureCard(CardType.DAGGER));
+        p3.addCardToHand(new AdventureCard(CardType.SWORD));
+        p3.addCardToHand(new AdventureCard(CardType.SWORD));
+        p3.addCardToHand(new AdventureCard(CardType.SWORD));
+        p3.addCardToHand(new AdventureCard(CardType.HORSE));
+        p3.addCardToHand(new AdventureCard(CardType.HORSE));
+        p3.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p3.addCardToHand(new AdventureCard(CardType.LANCE));
+
+        p4.getHand().clear();
+        p4.addCardToHand(new AdventureCard(CardType.F5));
+        p4.addCardToHand(new AdventureCard(CardType.F15));
+        p4.addCardToHand(new AdventureCard(CardType.F15));
+        p4.addCardToHand(new AdventureCard(CardType.F40));
+        p4.addCardToHand(new AdventureCard(CardType.DAGGER));
+        p4.addCardToHand(new AdventureCard(CardType.DAGGER));
+        p4.addCardToHand(new AdventureCard(CardType.SWORD));
+        p4.addCardToHand(new AdventureCard(CardType.HORSE));
+        p4.addCardToHand(new AdventureCard(CardType.HORSE));
+        p4.addCardToHand(new AdventureCard(CardType.BATTLE_AXE));
+        p4.addCardToHand(new AdventureCard(CardType.LANCE));
+        p4.addCardToHand(new AdventureCard(CardType.EXCALIBUR));
+
+        // P4 draws a quest for 4 stages
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.Q4));
+        EventCard drawnCard = game.drawEventCard();
+        game.getView().displayEventCard(printWriter, drawnCard);
+
+        // Get a sponsor
+        String input = "no\nyes\n";
+        int sponsorIndex = controller.getSponsor(printWriter, new Scanner(input));
+        Player sponsor = game.getPlayer(sponsorIndex);
+
+        // Build the stages of the quest
+        String input2 = "0\n7\nq\n1\n5\nq\n1\n3\n5\nq\n1\n3\nq\n";
+        controller.setupQuest(printWriter, new Scanner(input2), sponsor, drawnCard.getType().getValue());
+
+        game.getAdventureDeck().getCards().set(0, new AdventureCard(CardType.F30));
+        game.getAdventureDeck().getCards().set(1, new AdventureCard(CardType.SWORD));
+        game.getAdventureDeck().getCards().set(2, new AdventureCard(CardType.BATTLE_AXE));
+
+        game.getAdventureDeck().getCards().set(3, new AdventureCard(CardType.F10));
+        game.getAdventureDeck().getCards().set(4, new AdventureCard(CardType.LANCE));
+        game.getAdventureDeck().getCards().set(5, new AdventureCard(CardType.LANCE));
+
+        game.getAdventureDeck().getCards().set(6, new AdventureCard(CardType.BATTLE_AXE));
+        game.getAdventureDeck().getCards().set(7, new AdventureCard(CardType.SWORD));
+
+        game.getAdventureDeck().getCards().set(8, new AdventureCard(CardType.F30));
+        game.getAdventureDeck().getCards().set(9, new AdventureCard(CardType.LANCE));
+
+        String input3 = "yes\nyes\nyes\n0\n0\n0\n4\n5\nq\n4\n3\nq\n3\n6\nq\n" + "yes\nyes\nyes\n6\n5\nq\n8\n3\nq\n5\n6\nq\n" + "yes\nyes\n8\n3\n5\nq\n6\n4\n8\nq\n" + "yes\nyes\n6\n5\n7\nq\n3\n4\n5\n7\nq\n";
+        Scanner scanner = new Scanner(input3);
+
+        for(int i = 0; i < game.getQuest().size(); i++) {
+            controller.getAndDisplayEligibleParticipants(printWriter, sponsorIndex);
+            controller.getPromptedEligiblePlayers(printWriter, scanner);
+            controller.handleParticipation(printWriter, scanner);
+
+            controller.voidSetupAttacks(printWriter, scanner);
+            controller.resolveAttacks(printWriter, i);
+            boolean isDone = controller.endResolution(printWriter, i);
+            if(isDone) break;
+        }
+
+        String input4 = "0\n0\n0\n0\n0\n";
+        controller.endQuest(printWriter, new Scanner(input4), sponsorIndex, drawnCard);
+
+        // Assert shields
+        assertEquals(0, p1.getShields());
+        assertEquals(0, p3.getShields());
+        assertEquals(4, p4.getShields());
+
+        // Assert hands
+        assertEquals(9, p1.getHandSize());
+        assertEquals(CardType.F5, p1.getHand().get(0).getType());
+        assertEquals(CardType.F10, p1.getHand().get(1).getType());
+        assertEquals(CardType.F15, p1.getHand().get(2).getType());
+        assertEquals(CardType.F15, p1.getHand().get(3).getType());
+        assertEquals(CardType.F30, p1.getHand().get(4).getType());
+        assertEquals(CardType.HORSE, p1.getHand().get(5).getType());
+        assertEquals(CardType.BATTLE_AXE, p1.getHand().get(6).getType());
+        assertEquals(CardType.BATTLE_AXE, p1.getHand().get(7).getType());
+        assertEquals(CardType.LANCE, p1.getHand().get(8).getType());
+
+        assertEquals(5, p3.getHandSize());
+        assertEquals(CardType.F5, p3.getHand().get(0).getType());
+        assertEquals(CardType.F5, p3.getHand().get(1).getType());
+        assertEquals(CardType.F15, p3.getHand().get(2).getType());
+        assertEquals(CardType.F30, p3.getHand().get(3).getType());
+        assertEquals(CardType.SWORD, p3.getHand().get(4).getType());
+
+        assertEquals(4, p4.getHandSize());
+        assertEquals(CardType.F15, p4.getHand().get(0).getType());
+        assertEquals(CardType.F15, p4.getHand().get(1).getType());
+        assertEquals(CardType.F40, p4.getHand().get(2).getType());
+        assertEquals(CardType.LANCE, p4.getHand().get(3).getType());
+
+        assertEquals(12, p2.getHandSize());
+
+    }
+
 
 }
