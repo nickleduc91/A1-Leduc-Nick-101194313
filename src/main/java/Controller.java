@@ -30,6 +30,13 @@ public class Controller {
                 }
 
                 AdventureCard card = p.getHand().get(position);
+
+                //Check if a foe was selected
+                if(card.getType().isFoe()) {
+                    view.displayMessage(output, "Invalid selection: You cannot select a foe in an attack");
+                    continue;
+                }
+
                 // Check for duplicates
                 if(!p.getAttack().isEmpty()) {
                     boolean duplicate = false;
