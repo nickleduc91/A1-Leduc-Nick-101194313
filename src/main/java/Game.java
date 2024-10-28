@@ -15,6 +15,7 @@ public class Game {
     private ArrayList<ArrayList<AdventureCard>> quest;
     private int currentStageIndex;
     private ArrayList<Player> eligibleParticipants;
+    private int sponsorIndex;
 
     public Game() {
         eventDeck = new Deck<>();
@@ -25,7 +26,12 @@ public class Game {
         this.quest = new ArrayList<>();
         this.currentStageIndex = 0;
         this.eligibleParticipants = new ArrayList<>();
+        this.sponsorIndex = 0;
     }
+
+    public void setSponsorIndex(int index) { this.sponsorIndex = index; }
+
+    public int getSponsorIndex() { return sponsorIndex; }
 
     public int getAttackValue(int stageIndex) {
         int value = 0;

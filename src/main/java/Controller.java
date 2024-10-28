@@ -126,66 +126,72 @@ public class Controller {
         }
     }
 
-    public void voidSetupAttacks(PrintWriter output, Scanner input) {
-        for(Player p : game.getEligibleParticipants()) {
-            view.displayCurrentPlayerHand(output, p);
+    public void setupAttackForPlayer(PrintWriter output, Scanner input, Player p) {
+        view.displayCurrentPlayerHand(output, p);
 
-            while (true) {
-                int position = view.getAttackPosition(output, input, p);
+        while (true) {
+            int position = view.getAttackPosition(output, input, p);
 
-                if(position == -1) {
-                    break;
+            if(position == -1) {
+                break;
+            }
+
+            AdventureCard card = p.getHand().get(position);
+
+            //Check if a foe was selected
+            if(card.getType().isFoe()) {
+                view.displayMessage(output, "Invalid selection: You cannot select a foe in an attack");
+                continue;
+            }
+
+            // Check for duplicates
+            if(!p.getAttack().isEmpty()) {
+                boolean duplicate = false;
+                for (AdventureCard attackCard : p.getAttack()) {
+                    if (attackCard.getType().getName().equals(card.getType().getName())) {
+                        duplicate = true;
+                        break;
+                    }
                 }
-
-                AdventureCard card = p.getHand().get(position);
-
-                //Check if a foe was selected
-                if(card.getType().isFoe()) {
-                    view.displayMessage(output, "Invalid selection: You cannot select a foe in an attack");
+                if(duplicate) {
+                    view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in an attack");
                     continue;
                 }
-
-                // Check for duplicates
-                if(!p.getAttack().isEmpty()) {
-                    boolean duplicate = false;
-                    for (AdventureCard attackCard : p.getAttack()) {
-                        if (attackCard.getType().getName().equals(card.getType().getName())) {
-                            duplicate = true;
-                            break;
-                        }
-                    }
-                    if(duplicate) {
-                        view.displayMessage(output, "Invalid selection: You cannot have duplicate weapons in an attack");
-                        continue;
-                    }
-                }
-
-                p.getAttack().add(card);
-                view.displayPlayerAttack(output, p);
             }
 
-            output.println();
-            if(p.getAttack().isEmpty()) {
-                output.print("Attack for " + p + ": No cards were selected");
-            } else {
-                output.print("Attack for " + p + ": ");
-                for(AdventureCard card : p.getAttack()) {
-                    output.print(card + " ");
-                    p.getHand().remove(card);
-                }
-            }
-
-            output.println();
-            output.flush();
-
+            p.getAttack().add(card);
+            view.displayPlayerAttack(output, p);
         }
 
+        output.println();
+        if(p.getAttack().isEmpty()) {
+            output.print("Attack for " + p + ": No cards were selected");
+        } else {
+            output.print("Attack for " + p + ": ");
+            for(AdventureCard card : p.getAttack()) {
+                output.print(card + " ");
+                p.getHand().remove(card);
+            }
+        }
+
+        output.println();
+        output.flush();
+    }
+
+    public void voidSetupAttacks(PrintWriter output, Scanner input) {
+        for(Player p : game.getEligibleParticipants()) {
+            setupAttackForPlayer(output, input, p);
+        }
+    }
+
+    public void addCardToParticipantHand(PrintWriter output, Scanner input, Player p) {
+        int trim = p.addCardToHand(game.drawAdventureCard());
+        view.trimCard(output, input, p, game.getAdventureDeck(), trim);
     }
 
     public void handleParticipation(PrintWriter output, Scanner input) {
         for(Player p : game.getEligibleParticipants()) {
-            int trim = p.addCardToHand(game.drawAdventureCard());
-            view.trimCard(output, input, p, game.getAdventureDeck(), trim);
+            addCardToParticipantHand(output, input, p);
         }
     }
 
