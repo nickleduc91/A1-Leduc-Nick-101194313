@@ -17,7 +17,7 @@ Feature: Quest Game
 
       # Stage 1
       And the Game displays the eligible participants
-      And Players "1,3,4" choose to participate in stage 1
+      And Players "1,3,4" choose to participate in stage 1 while Players "" decline
       And Player 1 draws and discards the cards in position "0"
       And Player 3 draws and discards the cards in position "0"
       And Player 4 draws and discards the cards in position "0"
@@ -26,9 +26,10 @@ Feature: Quest Game
       And Player 4 builds attack for current stage using the cards "3,6"
       And the Game resolves the attacks for stage 1
       And all participants discard their cards used for their attack in stage 1
+
       # Stage 2
       And the Game displays the eligible participants
-      And Players "1,3,4" choose to participate in stage 1
+      And Players "1,3,4" choose to participate in stage 1 while Players "" decline
       And Player 1 draws and discards the cards in position ""
       And Player 3 draws and discards the cards in position ""
       And Player 4 draws and discards the cards in position ""
@@ -37,18 +38,20 @@ Feature: Quest Game
       And Player 4 builds attack for current stage using the cards "5,6"
       And the Game resolves the attacks for stage 2
       And all participants discard their cards used for their attack in stage 2
+
       # Stage 3
       And the Game displays the eligible participants
-      And Players "3,4" choose to participate in stage 3
+      And Players "3,4" choose to participate in stage 3 while Players "" decline
       And Player 3 draws and discards the cards in position ""
       And Player 4 draws and discards the cards in position ""
       And Player 3 builds attack for current stage using the cards "8,3,5"
       And Player 4 builds attack for current stage using the cards "6,4,8"
       And the Game resolves the attacks for stage 3
       And all participants discard their cards used for their attack in stage 3
+
       # Stage 4
       And the Game displays the eligible participants
-      And Players "3,4" choose to participate in stage 4
+      And Players "3,4" choose to participate in stage 4 while Players "" decline
       And Player 3 draws and discards the cards in position ""
       And Player 4 draws and discards the cards in position ""
       And Player 3 builds attack for current stage using the cards "6,5,7"
@@ -59,7 +62,17 @@ Feature: Quest Game
       And the Sponsor discards all cards used in the "Q4" quest and draws and trims cards in position "0,0,0,0,0"
 
     # THEN
-    Then Player 2 should have 12 cards in hand
-      And Player 1 should have 0 shields
+    Then Player 1 should have 0 shields
       And Player 3 should have 0 shields
       And Player 4 should have 4 shields
+
+      And Player 1 should have a hand of size 9
+      And Player 1 should have a hand containing the cards "F5,F10,F15,F15,F30,HORSE,BATTLE_AXE,BATTLE_AXE,LANCE"
+
+      And Player 3 should have a hand of size 5
+      And Player 3 should have a hand containing the cards "F5,F5,F15,F30,SWORD"
+
+      And Player 4 should have a hand of size 4
+      And Player 4 should have a hand containing the cards "F15,F15,F40,LANCE"
+
+      And Player 2 should have a hand of size 12
