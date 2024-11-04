@@ -21,7 +21,6 @@ public class GameSteps {
         game = new Game();
         controller = new Controller(game);
         view = controller.getView();
-
     }
 
     @Given("the Adventure Deck's first {int} cards are {string}")
@@ -71,7 +70,7 @@ public class GameSteps {
         view.displayEventCard(output, drawnCard);
     }
 
-    @When("Player {int} sponsors the quest")
+    @Then("Player {int} sponsors the quest")
     public void a_player_decides_to_sponsor(int sponsorId) {
 
         int currentPlayerIndex = game.getCurrentPlayer().getIndex();
@@ -92,20 +91,21 @@ public class GameSteps {
 
     }
 
-    @When("Player {int} builds the {int} stages using the cards {string}")
-    public void sponsor_builds_stages(int sponsorId, int stages, String cards) {
+    @Then("Sponsor builds stage {int} using the cards at position {string}")
+    public void sponsor_builds_stage(int stage, String cards) {
         String input = cards.replace(",", "\n");
+        input += "\nq";
+
         Scanner scanner = new Scanner(input);
-        controller.setupQuest(output, scanner, game.getPlayer(sponsorId - 1), stages);
-        System.out.println("test");
+        controller.buildStage(output, scanner, game.getPlayer(game.getSponsorIndex()));
     }
 
-    @When("the Game displays the eligible participants")
+    @Then("the Game begins the next stage of the quest")
     public void display_eligible_participants() {
         controller.getAndDisplayEligibleParticipants(output, game.getSponsorIndex());
     }
 
-    @When("Players {string} choose to participate in stage {int} while Players {string} decline")
+    @Then("Players {string} choose to participate in stage {int} while Players {string} decline")
     public void players_participate_in_a_stage(String participants, int stage, String decline) {
         String[] participantPlayerIdArray = participants.isEmpty() ? new String[0] : participants.split(",");
         String[] declinePlayerIdArray = decline.isEmpty() ? new String[0] : decline.split(",");
@@ -121,20 +121,19 @@ public class GameSteps {
             }
         }
 
-
-
         controller.getPromptedEligiblePlayers(output, new Scanner(input.toString()));
     }
 
-    @When("Player {int} draws and discards the cards in position {string}")
+    @Then("Player {int} draws and discards the cards at position {string}")
     public void players_discards_cards(int playerId, String cards) {
         String input = cards.replace(",", "\n");
         Player p = game.getPlayer(playerId - 1);
 
         controller.addCardToParticipantHand(output, new Scanner(input), p);
+        System.out.println("TEST");
     }
 
-    @When("Player {int} builds attack for current stage using the cards {string}")
+    @Then("Player {int} builds attack for current stage using the cards at position {string}")
     public void player_builds_attack(int playerId, String cards) {
         view.identifyStages(output, game.getQuest());
 
@@ -143,24 +142,27 @@ public class GameSteps {
 
         Player p = game.getPlayer(playerId - 1);
         controller.setupAttackForPlayer(output, new Scanner(input), p);
+        System.out.println("TEST");
     }
 
-    @When("the Game resolves the attacks for stage {int}")
+    @Then("the Game resolves the attacks for stage {int}")
     public void game_resolves_attacks(int stage) {
         controller.resolveAttacks(output, stage - 1);
     }
 
-    @When("all participants discard their cards used for their attack in stage {int}")
+    @Then("all participants discard their cards used for their attack in stage {int}")
     public void participants_discard_their_cards(int stage) {
         controller.endResolution(output, stage - 1);
+        System.out.println("TEST");
     }
 
-    @When("the Sponsor discards all cards used in the {string} quest and draws and trims cards in position {string}")
+    @Then("the Sponsor discards all cards used in the {string} quest and draws and trims cards in position {string}")
     public void end_quest(String eCard, String cards) {
         CardType cardType = CardType.valueOf(eCard);
         String input = cards.replace(",", "\n");
 
         controller.endQuest(output, new Scanner(input), game.getSponsorIndex(), new EventCard(cardType));
+        System.out.println("TEST");
     }
 
     @Then("Player {int} should have {int} shields")
@@ -188,6 +190,17 @@ public class GameSteps {
 
             assertEquals(cardType, p.getHand().get(i).getType());
         }
+    }
+
+    @Then("The winners of the game are displayed")
+    public void display_winners() {
+        view.displayWinners(output, game.getWinners());
+    }
+
+    @Then("Player {int} should be a winner")
+    public void validate_winner(int playerId) {
+        Player p = game.getPlayer(playerId - 1);
+        assertTrue(game.getWinners().contains(p));
     }
 
 }
