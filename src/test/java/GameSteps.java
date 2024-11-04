@@ -138,7 +138,10 @@ public class GameSteps {
         view.identifyStages(output, game.getQuest());
 
         String input = cards.replace(",", "\n");
-        input += "\nq";
+        if(!input.isEmpty()) {
+            input += "\n";
+        }
+        input += "q";
 
         Player p = game.getPlayer(playerId - 1);
         controller.setupAttackForPlayer(output, new Scanner(input), p);

@@ -195,6 +195,48 @@ Feature: Quest Game
       And Player 2 should be a winner
       And Player 4 should be a winner
 
+  Scenario: 0_winner_quest:
+
+    # GIVEN
+    Given a new game starts
+      And Player 1 has a hand of "F5,F10,F15,F15,DAGGER,SWORD,HORSE,HORSE,HORSE,BATTLE_AXE,LANCE,EXCALIBUR"
+
+    # WHEN
+    When Player 1 draws a quest of 2 stages
+
+    Then Player 1 sponsors the quest
+      And Sponsor builds stage 1 using the cards at position "0"
+      And Sponsor builds stage 2 using the cards at position "0"
+
+      And Player 1 should have a hand of size 10
+
+      # Stage 1
+      And the Game begins the next stage of the quest
+      And Players "2,3,4" choose to participate in stage 1 while Players "" decline
+      And Player 2 draws and discards the cards at position "0"
+      And Player 3 draws and discards the cards at position "0"
+      And Player 4 draws and discards the cards at position "0"
+      And Player 2 builds attack for current stage using the cards at position ""
+      And Player 3 builds attack for current stage using the cards at position ""
+      And Player 4 builds attack for current stage using the cards at position ""
+      And the Game resolves the attacks for stage 1
+      And all participants discard their cards used for their attack in stage 1
+
+      And the Sponsor discards all cards used in the "Q2" quest and draws and trims cards in position "0,0"
+
+      And Player 1 should have 0 shields
+      And Player 2 should have 0 shields
+      And Player 3 should have 0 shields
+      And Player 4 should have 0 shields
+
+      And Player 1 should have a hand of size 12
+      And Player 2 should have a hand of size 12
+      And Player 3 should have a hand of size 12
+      And Player 4 should have a hand of size 12
+
+
+
+
 
 
 
