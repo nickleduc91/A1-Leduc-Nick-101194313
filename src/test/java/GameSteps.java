@@ -98,6 +98,7 @@ public class GameSteps {
 
         Scanner scanner = new Scanner(input);
         controller.buildStage(output, scanner, game.getPlayer(game.getSponsorIndex()));
+        System.out.println("TEST");
     }
 
     @Then("the Game begins the next stage of the quest")
@@ -122,6 +123,7 @@ public class GameSteps {
         }
 
         controller.getPromptedEligiblePlayers(output, new Scanner(input.toString()));
+        System.out.println("TEST");
     }
 
     @Then("Player {int} draws and discards the cards at position {string}")
@@ -205,6 +207,49 @@ public class GameSteps {
         Player p = game.getPlayer(playerId - 1);
         assertTrue(game.getWinners().contains(p));
     }
+
+    @Then("Player {int} draws a Plague card")
+    public void player_draws_plague(int playerId) {
+        Player p = game.getPlayer(playerId - 1);
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PLAGUE));
+
+        EventCard drawnCard = game.drawEventCard();
+        controller.handleDrawnECard(drawnCard, output, new Scanner(""));
+        System.out.println("TEST");
+
+    }
+
+    @Then("Player {int} draws a Prosperity card")
+    public void player_draws_prosperity(int playerId) {
+        Player p = game.getPlayer(playerId - 1);
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.PROSPERITY));
+
+        EventCard drawnCard = game.drawEventCard();
+        game.getEventDeck().addToDiscardPile(drawnCard);
+    }
+
+    @Then("Player {int} immediately draws 2 Adventure cards and discards the cards at position {string}")
+    public void player_draws_adventure_cards(int playerId, String cards) {
+        String input = cards.replace(",", "\n");
+        controller.handleDraw(playerId - 1, output, new Scanner(input));
+    }
+
+    @Then("the turn of Player {int} has begun")
+    public void player_turn(int playerId) {
+        game.updateNextPlayer();
+
+    }
+
+    @Then("Player {int} draws a Queen's favor card")
+    public void player_draws_queens_favor(int playerId) {
+        Player p = game.getPlayer(playerId - 1);
+        game.getEventDeck().getCards().set(0, new EventCard(CardType.QUEENS_FAVOR));
+
+        EventCard drawnCard = game.drawEventCard();
+        game.getEventDeck().addToDiscardPile(drawnCard);
+
+    }
+
 
 }
 
