@@ -223,6 +223,7 @@ Feature: Quest Game
       # End of Q2
       And the Sponsor discards all cards used in the "Q2" quest and draws and trims cards in position "0,0"
 
+      # Final Asserts
       And Player 1 should have 0 shields
       And Player 2 should have 0 shields
       And Player 3 should have 0 shields
@@ -380,8 +381,10 @@ Feature: Quest Game
       # A winner is found and they are displayed
       And The winners of the game are displayed
 
+      # Final Asserts
       And Player 2 should have 5 shields
       And Player 3 should have 7 shields
+      And Player 4 should have 4 shields
       And Player 3 should be a winner
 
 

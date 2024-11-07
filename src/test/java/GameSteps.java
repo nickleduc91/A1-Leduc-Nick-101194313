@@ -4,6 +4,7 @@ import Enums.CardType;
 import io.cucumber.java.en.*;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,8 +14,7 @@ public class GameSteps {
     private Controller controller;
     private Game game;
     private View view;
-    private final PrintWriter output = new PrintWriter(System.out);
-    private StringBuilder participants = new StringBuilder();
+    private final PrintWriter output = new PrintWriter(new StringWriter());
 
     @Given("a new game starts")
     public void a_new_game_starts() {
@@ -88,7 +88,6 @@ public class GameSteps {
         Scanner scanner = new Scanner(input.toString());
         int sponsorIndex = controller.getSponsor(output, scanner);
         game.setSponsorIndex(sponsorIndex);
-
     }
 
     @Then("Sponsor builds stage {int} using the cards at position {string}")
@@ -98,7 +97,6 @@ public class GameSteps {
 
         Scanner scanner = new Scanner(input);
         controller.buildStage(output, scanner, game.getPlayer(game.getSponsorIndex()));
-        System.out.println("TEST");
     }
 
     @Then("the Game begins the next stage of the quest")
@@ -110,7 +108,6 @@ public class GameSteps {
     public void players_participate_in_a_stage(String participants, int stage, String decline) {
         String[] participantPlayerIdArray = participants.isEmpty() ? new String[0] : participants.split(",");
         String[] declinePlayerIdArray = decline.isEmpty() ? new String[0] : decline.split(",");
-
         StringBuilder input = new StringBuilder();
 
         // Create the input string based on those who participate and those who decline
@@ -121,9 +118,7 @@ public class GameSteps {
                 input.append("no\n");
             }
         }
-
         controller.getPromptedEligiblePlayers(output, new Scanner(input.toString()));
-        System.out.println("TEST");
     }
 
     @Then("Player {int} draws and discards the cards at position {string}")
@@ -132,7 +127,6 @@ public class GameSteps {
         Player p = game.getPlayer(playerId - 1);
 
         controller.addCardToParticipantHand(output, new Scanner(input), p);
-        System.out.println("TEST");
     }
 
     @Then("Player {int} builds attack for current stage using the cards at position {string}")
@@ -147,7 +141,6 @@ public class GameSteps {
 
         Player p = game.getPlayer(playerId - 1);
         controller.setupAttackForPlayer(output, new Scanner(input), p);
-        System.out.println("TEST");
     }
 
     @Then("the Game resolves the attacks for stage {int}")
@@ -158,7 +151,6 @@ public class GameSteps {
     @Then("all participants discard their cards used for their attack in stage {int}")
     public void participants_discard_their_cards(int stage) {
         controller.endResolution(output, stage - 1);
-        System.out.println("TEST");
     }
 
     @Then("the Sponsor discards all cards used in the {string} quest and draws and trims cards in position {string}")
@@ -167,7 +159,6 @@ public class GameSteps {
         String input = cards.replace(",", "\n");
 
         controller.endQuest(output, new Scanner(input), game.getSponsorIndex(), new EventCard(cardType));
-        System.out.println("TEST");
     }
 
     @Then("Player {int} should have {int} shields")
@@ -215,8 +206,6 @@ public class GameSteps {
 
         EventCard drawnCard = game.drawEventCard();
         controller.handleDrawnECard(drawnCard, output, new Scanner(""));
-        System.out.println("TEST");
-
     }
 
     @Then("Player {int} draws a Prosperity card")
@@ -237,7 +226,6 @@ public class GameSteps {
     @Then("the turn of Player {int} has begun")
     public void player_turn(int playerId) {
         game.updateNextPlayer();
-
     }
 
     @Then("Player {int} draws a Queen's favor card")
@@ -247,7 +235,6 @@ public class GameSteps {
 
         EventCard drawnCard = game.drawEventCard();
         game.getEventDeck().addToDiscardPile(drawnCard);
-
     }
 
 
